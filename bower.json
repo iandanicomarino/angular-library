@@ -1,0 +1,18 @@
+{
+  "name": "angular library",
+  "homepage": "https://github.com/iandanicomarino/angular-library",
+  "authors": [
+    "nekomarino <nekomarino@gmail.com>"
+  ],
+  "description": "school project",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
