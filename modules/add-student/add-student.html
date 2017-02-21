@@ -1,5 +1,5 @@
-<md-dialog aria-label="Add Student">
-    <form ng-cloak>
+<md-dialog aria-label="Add Student" ng-controller="addStudentController">
+    <form ng-cloak ng-submit="addUser(user)">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>Add Student</h2>
@@ -17,13 +17,13 @@
                     <md-input-container class="md-icon-float md-block">
                         <label>School ID</label>
                         <md-icon class="name"><i class="material-icons">perm_identity</i></md-icon>
-                        <input ng-model="user.id" type="text">
+                        <input ng-model="user.id" type="text" required>
                     </md-input-container>
 
                     <md-input-container class="md-icon-float md-block">
                         <label>Firstname</label>
                         <md-icon class="name"><i class="material-icons">person_pin</i></md-icon>
-                        <input ng-model="user.name.firstName" type="text">
+                        <input ng-model="user.name.firstName" type="text" required>
                     </md-input-container>
 
                     <md-input-container class="md-icon-float md-block">
@@ -35,7 +35,7 @@
                     <md-input-container class="md-icon-float md-block">
                         <label>Lastname</label>
                         <md-icon md-svg-src="img/icons/ic_person_24px.svg" class="name"></md-icon>
-                        <input ng-model="user.name.lastName" type="text">
+                        <input ng-model="user.name.lastName" type="text" required>
                     </md-input-container>
 
                     <md-input-container md-no-float class="md-icon-float md-block"> 
@@ -48,7 +48,7 @@
                     <md-input-container class="md-block">
                         <label>Email</label>
                         <md-icon class="name"><i class="material-icons">email</i></md-icon>
-                        <input ng-model="user.email" type="email">
+                        <input ng-model="user.email" type="email" required>
                     </md-input-container>
 
                     <md-input-container md-no-float class="md-block">
@@ -67,7 +67,7 @@
                 Close
             </md-button>
             <span flex></span>
-            <md-button class="md-primary" ng-click="answer('useful')">
+            <md-button type="submit">
                 Save Student
             </md-button>
         </md-dialog-actions>

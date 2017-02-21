@@ -4,7 +4,8 @@ var myApp = angular.module('myApp',
         'ui.router',
         'firebase'
     ]
-).run(function( $rootScope,$state){
+).run(function( $rootScope,$state,configService){
+  firebase.initializeApp(configService.config());
 firebase.auth().onAuthStateChanged(function(user){
     if (user){
       console.log('COOOL')
