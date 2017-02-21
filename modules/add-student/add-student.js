@@ -1,13 +1,13 @@
 myApp.controller('addStudentController',
-  function ($scope, $timeout, $mdSidenav, $log, writeService) {
-    $scope.addUser = function(user){
-      console.log(user)
+  function ($scope, $timeout, $mdSidenav, $log, writeService, $mdDialog, configService) {
+    $scope.addUser = function (user) {
       writeService.addStudent(user)
-      .then(function(key){
-        console.log(key)
-      }).catch(function(error){
-        console.log(error)
-      })
+        .then(function (key) {
+          configService.showToast('Added a Student')
+          $mdDialog.hide();
+        }).catch(function (error) {
+          console.log(error)
+        })
     }
   }
 )

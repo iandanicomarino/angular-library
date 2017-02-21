@@ -1,4 +1,4 @@
-myApp.service('configService', function () {
+myApp.service('configService', function ($mdToast) {
     return {
         config: function () {
             return {
@@ -8,6 +8,14 @@ myApp.service('configService', function () {
                 storageBucket: "library-system-74f7d.appspot.com",
                 messagingSenderId: "511688677886"
             }
+        },
+        showToast: function (text) {
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent(text)
+                    .position('bottom right')
+                    .hideDelay(3000)
+            );
         }
     }
 })
