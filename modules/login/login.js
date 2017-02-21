@@ -7,6 +7,7 @@ function($scope, $q, $state){
         firebase.auth().signInWithEmailAndPassword(user.email, user.password)
         .then(function(user){
             console.log(user);
+            $state.go('main')
         }).catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
