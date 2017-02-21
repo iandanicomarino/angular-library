@@ -11,6 +11,17 @@ myApp.service('readService', function($q,configService){
                     reject(error)
                 })
             })
+        },
+        books : function(user){
+            return $q(function(resolve,reject){
+                var ref = db.ref('books')
+                ref.once('value')
+                .then(function(snapshot){
+                    resolve(snapshot.val());
+                },function(error){
+                    reject(error)
+                })
+            })
         }
     }
     return readServiceFunctions;

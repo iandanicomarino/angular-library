@@ -43,6 +43,13 @@ myApp.config(function ($stateProvider, $mdThemingProvider) {
     controller: 'viewStudentController'
   }
 
+  var books = {
+    name: 'books',
+    url: '/books',
+    templateUrl: '/modules/view-books/view-books.html',
+    controller: 'viewBooksController'
+  }
+  $stateProvider.state(books);
   $stateProvider.state(students);
   $stateProvider.state(main);
   $stateProvider.state(loginState);
