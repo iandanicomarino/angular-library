@@ -1,0 +1,75 @@
+<md-dialog aria-label="Add Student">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Add Student</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <i class="material-icons">close</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <h2>Student Info</h2>
+                <md-content class="md-no-momentum">
+                    <md-input-container class="md-icon-float md-block">
+                        <label>School ID</label>
+                        <md-icon class="name"><i class="material-icons">perm_identity</i></md-icon>
+                        <input ng-model="user.id" type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Firstname</label>
+                        <md-icon class="name"><i class="material-icons">person_pin</i></md-icon>
+                        <input ng-model="user.name.firstName" type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Middlename</label>
+                        <md-icon md-svg-src="img/icons/ic_person_24px.svg" class="name"></md-icon>
+                        <input ng-model="user.name.middleName" type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Lastname</label>
+                        <md-icon md-svg-src="img/icons/ic_person_24px.svg" class="name"></md-icon>
+                        <input ng-model="user.name.lastName" type="text">
+                    </md-input-container>
+
+                    <md-input-container md-no-float class="md-icon-float md-block"> 
+                        <label>Phone Number</label>
+                        <md-icon class="name"><i class="material-icons">phone</i></md-icon>
+                        <md-icon md-svg-src="img/icons/ic_phone_24px.svg"></md-icon>
+                        <input ng-model="user.phone" type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Email</label>
+                        <md-icon class="name"><i class="material-icons">email</i></md-icon>
+                        <input ng-model="user.email" type="email">
+                    </md-input-container>
+
+                    <md-input-container md-no-float class="md-block">
+                        <label>Address</label>
+                        <md-icon class="name"><i class="material-icons">home</i></md-icon>
+                        <input ng-model="user.address" type="text">
+                       
+                    </md-input-container>
+
+                </md-content>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button class="md-warn" target="_blank" ng-click="cancel()">
+                Close
+            </md-button>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="answer('useful')">
+                Save Student
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

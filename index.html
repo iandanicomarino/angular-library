@@ -34,10 +34,12 @@
   <!--Written Scripts-->
   <script src="app.js"></script>
   <script src="./modules/login/login.js"></script>
+  <script src="./modules/sidenav-topnav/sidenav-topnav.js"></script>
+  <script src="./modules/add-student/add-student.js"></script>
   <!--End of Written Scripts-->
 </head>
 <body ng-app="myApp" ng-cloak>
-    <md-toolbar  ng-include="'modules/topbar/topbar.html'" ng-controller="topBarController"></md-toolbar >
-    <div id="content"  layout="column" style="height:100% !important;" ui-view flex> </div>
+    <md-toolbar  ng-include="'modules/sidenav-topnav/topbar.html'" ng-controller="topBarController"></md-toolbar >
+    <div id="content"  layout="column" ui-view flex> </div>
 </body>
 </html>
