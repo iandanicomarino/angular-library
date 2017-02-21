@@ -1,0 +1,68 @@
+<md-dialog aria-label="Add Student" ng-controller="addBooksController">
+    <form ng-cloak ng-submit="addBooks(book,copies)">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Add Books</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <i class="material-icons">close</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <h2>Book Info</h2>
+                <md-content class="md-no-momentum">
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Book Title</label>
+                        <md-icon class="name"><i class="material-icons">book</i></md-icon>
+                        <input ng-model="book.title" type="text" required>
+                    </md-input-container>
+
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Author</label>
+                        <md-icon class="name"><i class="material-icons">assignment_ind</i></md-icon>
+                        <input ng-model="book.author" type="text" required>
+                    </md-input-container>
+
+                    <md-input-container md-no-float class="md-icon-float md-block"> 
+                        <label>Description</label>
+                        <md-icon class="name"><i class="material-icons">description</i></md-icon>
+                        <md-icon md-svg-src="img/icons/ic_phone_24px.svg"></md-icon>
+                        <input ng-model="book.description" type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Year</label>
+                        <md-icon class="name"><i class="material-icons">date_range</i></md-icon>
+                        <input ng-model="book.year" type="number">
+                    </md-input-container>
+
+                    <md-input-container class="md-icon-float md-block">
+                        <label>ISBN</label>
+                        <md-icon class="name"><i class="material-icons">info</i></md-icon>
+                        <input ng-model="book.isbn" type="text" required>
+                    </md-input-container>
+
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Copies</label>
+                        <md-icon class="name" min=1><i class="material-icons">content_copy</i></md-icon>
+                        <input ng-model="copies" type="number" required>
+                    </md-input-container>
+
+                </md-content>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button class="md-warn" target="_blank" ng-click="cancel()">
+                Close
+            </md-button>
+            <span flex></span>
+            <md-button type="submit">
+                Save Books
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

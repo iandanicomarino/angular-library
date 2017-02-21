@@ -1,19 +1,37 @@
 myApp.controller('topBarController',
   function ($scope, $timeout, $mdSidenav, $log, $mdDialog) {
     $scope.showAdvanced = function (ev) {
-      $mdDialog.show({
-        controller: DialogController,
-        templateUrl: '/modules/add-student/add-student.html',
-        parent: angular.element(document.body),
-        targetEvent: ev,
-        clickOutsideToClose: true,
-        fullscreen: true // Only for -xs, -sm breakpoints.
-      })
-        .then(function (answer) {
-          $scope.status = 'You said the information was "' + answer + '".';
-        }, function () {
-          $scope.status = 'You cancelled the dialog.';
-        });
+      if (ev == "addStudent") {
+        $mdDialog.show({
+          controller: DialogController,
+          templateUrl: '/modules/add-student/add-student.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          fullscreen: true // Only for -xs, -sm breakpoints.
+        })
+          .then(function (answer) {
+            $scope.status = 'You said the information was "' + answer + '".';
+          }, function () {
+            $scope.status = 'You cancelled the dialog.';
+          });
+      }
+
+      if (ev == "addBooks") {
+        $mdDialog.show({
+          controller: DialogController,
+          templateUrl: '/modules/add-books/add-books.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose: true,
+          fullscreen: true // Only for -xs, -sm breakpoints.
+        })
+          .then(function (answer) {
+            $scope.status = 'You said the information was "' + answer + '".';
+          }, function () {
+            $scope.status = 'You cancelled the dialog.';
+          });
+      }
     };
 
     function DialogController($scope, $mdDialog) {
