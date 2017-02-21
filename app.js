@@ -1,9 +1,18 @@
 var myApp = angular.module('myApp', 
     [
         'ngMaterial',
-        'ui.router'
+        'ui.router',
+        'firebase'
     ]
-)
+).run(function($rootScope,$state){
+firebase.auth().onAuthStateChanged(function(user){
+    if (user){
+      console.log('COOOL')
+    }
+});
+})
+
+
 
 myApp.config(function($stateProvider) {
   var loginState = {
