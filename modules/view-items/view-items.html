@@ -7,26 +7,26 @@
         <md-content layout="column" flex>
             <div layout="row" layout-align="top center" layout-wrap>
                 <h1>
-                    All Students
+                    All Items
                 </h1>
             </div>
             <div layout="row" layout-wrap >
-                <div flex-xs=100 flex-sm=50 flex-md=50 flex-lg=33 flex-xl="25" ng-repeat="(key,student) in students">
+                <div flex-xs=100 flex-sm=50 flex-md=50 flex-lg=33 flex-xl="25" ng-repeat="(key,item) in items">
                     <md-card>
                         <md-card-title>
                             <md-card-title-text>
                                 <md-truncate class="md-headline">
-                                    {{student.name.firstName}} {{student.name.midleName[0]}} {{student.name.lastName}}
+                                    {{item.title}}
                                 </md-truncate>
-                                <span class="md-subhead">{{student.id}}</span>
+                                <span class="md-subhead">{{item.author}}</span>
                             </md-card-title-text>
                             <md-card-title-media>
-                                <div class="md-media-sm card-media"><i class="material-icons" style="font-size: 72px">account_circle</i></div>
+                                <div class="md-media-sm card-media"><i class="material-icons" style="font-size: 72px">library_items</i></div>
                             </md-card-title-media>
                         </md-card-title>
                         <md-card-actions layout="row" layout-align="end center">
                             <md-button class="md-primary md-raised md-hue-1">View Details</md-button>
-                            <md-button class="md-warn md-raised md-hue-1">View Transactions</md-button>
+                            <md-button class="md-warn md-raised md-hue-1">Item Transactions</md-button>
                         </md-card-actions>
                     </md-card>
                 </div>

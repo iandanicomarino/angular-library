@@ -1,10 +1,10 @@
 myApp.controller('topBarController',
   function ($scope, $timeout, $mdSidenav, $log, $mdDialog) {
     $scope.showAdvanced = function (ev) {
-      if (ev == "addStudent") {
+      if (ev == "addPawnee") {
         $mdDialog.show({
           controller: DialogController,
-          templateUrl: '/modules/add-student/add-student.html',
+          templateUrl: '/modules/add-pawnee/add-pawnee.html',
           parent: angular.element(document.body),
           targetEvent: ev,
           clickOutsideToClose: true,
@@ -17,10 +17,10 @@ myApp.controller('topBarController',
           });
       }
 
-      if (ev == "addBooks") {
+      if (ev == "addItems") {
         $mdDialog.show({
           controller: DialogController,
-          templateUrl: '/modules/add-books/add-books.html',
+          templateUrl: '/modules/add-items/add-items.html',
           parent: angular.element(document.body),
           targetEvent: ev,
           clickOutsideToClose: true,

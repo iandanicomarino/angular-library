@@ -36,21 +36,21 @@ myApp.config(function ($stateProvider, $mdThemingProvider) {
     templateUrl: '/modules/maincontent/main.html'
   }
 
-  var students = {
-    name: 'students',
-    url: '/students',
-    templateUrl: '/modules/view-students/view-student.html',
-    controller: 'viewStudentController'
+  var pawnees = {
+    name: 'pawnees',
+    url: '/pawnees',
+    templateUrl: '/modules/view-pawnees/view-pawnee.html',
+    controller: 'viewPawneeController'
   }
 
-  var books = {
-    name: 'books',
-    url: '/books',
-    templateUrl: '/modules/view-books/view-books.html',
-    controller: 'viewBooksController'
+  var items = {
+    name: 'items',
+    url: '/items',
+    templateUrl: '/modules/view-items/view-items.html',
+    controller: 'viewItemsController'
   }
-  $stateProvider.state(books);
-  $stateProvider.state(students);
+  $stateProvider.state(items);
+  $stateProvider.state(pawnees);
   $stateProvider.state(main);
   $stateProvider.state(loginState);
   $stateProvider.state(aboutState);

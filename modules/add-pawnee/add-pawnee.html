@@ -1,8 +1,8 @@
-<md-dialog aria-label="Add Student" ng-controller="addStudentController">
+<md-dialog aria-label="Add Pawnee" ng-controller="addPawneeController">
     <form ng-cloak ng-submit="addUser(user)">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>Add Student</h2>
+                <h2>Add Pawnee</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <i class="material-icons">close</i>
@@ -12,14 +12,8 @@
 
         <md-dialog-content>
             <div class="md-dialog-content">
-                <h2>Student Info</h2>
+                <h2>Pawnee Info</h2>
                 <md-content class="md-no-momentum">
-                    <md-input-container class="md-icon-float md-block">
-                        <label>School ID</label>
-                        <md-icon class="name"><i class="material-icons">perm_identity</i></md-icon>
-                        <input ng-model="user.id" type="text" required>
-                    </md-input-container>
-
                     <md-input-container class="md-icon-float md-block">
                         <label>Firstname</label>
                         <md-icon class="name"><i class="material-icons">person_pin</i></md-icon>
@@ -68,7 +62,7 @@
             </md-button>
             <span flex></span>
             <md-button type="submit">
-                Save Student
+                Save Pawnee
             </md-button>
         </md-dialog-actions>
     </form>

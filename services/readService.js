@@ -1,9 +1,9 @@
 myApp.service('readService', function($q,configService){
     const db = firebase.database();
     var readServiceFunctions = {
-        students : function(user){
+        pawnees : function(user){
             return $q(function(resolve,reject){
-                var ref = db.ref('students')
+                var ref = db.ref('pawnees')
                 ref.once('value')
                 .then(function(snapshot){
                     resolve(snapshot.val());
@@ -12,9 +12,9 @@ myApp.service('readService', function($q,configService){
                 })
             })
         },
-        books : function(user){
+        items : function(user){
             return $q(function(resolve,reject){
-                var ref = db.ref('books')
+                var ref = db.ref('items')
                 ref.once('value')
                 .then(function(snapshot){
                     resolve(snapshot.val());

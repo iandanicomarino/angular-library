@@ -1,9 +1,9 @@
 myApp.service('writeService', function($q,configService){
     const db = firebase.database();
     var writeServiceFunctions = {
-        addStudent : function(data){
+        addPawnee : function(data){
             return $q(function(resolve,reject){
-                var ref = db.ref('students')
+                var ref = db.ref('pawnees')
                 ref.push(data)
                 .then(function(key){
                     resolve(key)
@@ -15,9 +15,9 @@ myApp.service('writeService', function($q,configService){
                 })
             })
         },
-        addBook : function(data){
+        addItem : function(data){
             return $q(function(resolve,reject){
-                var ref = db.ref('books')
+                var ref = db.ref('items')
                 ref.push(data)
                 .then(function(key){
                     resolve(key)

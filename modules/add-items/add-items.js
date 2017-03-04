@@ -1,19 +1,19 @@
-myApp.controller('addBooksController',
+myApp.controller('addItemsController',
   function ($q,$scope, $timeout, $mdSidenav, $log, writeService, $mdDialog, configService) {
 
-    $scope.addBooks = function (book,copy) {
-        console.log(book,copy)
+    $scope.addItems = function (item,copy) {
+        console.log(item,copy)
         var promises = [];
         for(var i = 0; i<copy ; i++){
-            promises.push(writeService.addBook(book))
+            promises.push(writeService.addItem(item))
         }
         $q.all(promises)
         .then(function(keys){
             console.log(keys)
             if(copy==1){
-                configService.showToast('Added a Book')
+                configService.showToast('Added a Item')
             }else{
-                 configService.showToast('Added multiple copies of a book')
+                 configService.showToast('Added multiple copies of a item')
             }
             
             
