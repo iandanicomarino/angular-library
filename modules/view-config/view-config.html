@@ -1,0 +1,56 @@
+<md-dialog aria-label="Set Configuration" ng-controller="viewConfigController">
+    <form ng-cloak ng-submit="saveConfig()">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Configuration Information</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <i class="material-icons">close</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <h2>Configurations</h2>
+                <md-content class="md-no-momentum">
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Appraisal Percentage (0-100)</label>
+                        <md-icon class="name"><i class="material-icons">item</i></md-icon>
+                        <input ng-model="config.appraisalPercentage" type="number" required>
+                    </md-input-container>
+
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Maturity Date (Days)</label>
+                        <md-icon class="name"><i class="material-icons">assignment_ind</i></md-icon>
+                        <input ng-model="config.maturityDate" type="number" required>
+                    </md-input-container>
+
+                    <md-input-container md-no-float class="md-icon-float md-block"> 
+                        <label>Expiry Date (Days)</label>
+                        <md-icon class="name"><i class="material-icons">description</i></md-icon>
+                        <md-icon md-svg-src="img/icons/ic_phone_24px.svg"></md-icon>
+                        <input ng-model="config.expiryDate" type="number">
+                    </md-input-container>
+
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Service Fee</label>
+                        <md-icon class="name"><i class="material-icons">date_range</i></md-icon>
+                        <input ng-model="config.serviceFee" type="number">
+                    </md-input-container>
+
+                </md-content>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button class="md-warn" target="_blank" ng-click="cancel()">
+                Close
+            </md-button>
+            <span flex></span>
+            <md-button type="submit">
+                Save Config
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

@@ -10,12 +10,5 @@ myApp.controller('viewItemsController',
             init();
         });
 
-        function init() {
-            readService.items()
-                .then(function (items) {
-                    console.log(items)
-                    $scope.items = items;
-                })
-        }
     }
 )
