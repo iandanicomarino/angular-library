@@ -1,0 +1,14 @@
+[debug] ----------------------------------------------------------------------
+[debug] Command:      /usr/bin/nodejs /usr/bin/firebase serve
+[debug] CLI Version:  3.2.1
+[debug] Platform:     linux
+[debug] Node Version: v6.9.2
+[debug] Time:         Wed Feb 22 2017 17:14:24 GMT+0800 (PHT)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: /home/nekotopsi/programming/schoolproject/web/angular-library
+[info] Public Directory: /
+[info] 
+[info] Server listening at: http://localhost:5000
