@@ -15,14 +15,20 @@
                 <h2>Configurations</h2>
                 <md-content class="md-no-momentum">
                     <md-input-container class="md-icon-float md-block">
+                        <md-icon><i class="material-icons">grade</i></md-icon>
                         <label>Appraisal Percentage (0-100)</label>
-                        <md-icon class="name"><i class="material-icons">item</i></md-icon>
-                        <input ng-model="config.appraisalPercentage" type="number" required>
+                        <input ng-model="config.appraisalPercentage" type="number" min=0 max=100 required>
+                    </md-input-container>
+
+                     <md-input-container class="md-icon-float md-block">
+                        <md-icon><i class="material-icons">trending_up</i></md-icon>
+                        <label>Interest Percentage (0-100)</label>
+                        <input ng-model="config.defaultInterestPercentage" type="number" min=0 max=100 required>
                     </md-input-container>
 
                     <md-input-container class="md-icon-float md-block">
                         <label>Maturity Date (Days)</label>
-                        <md-icon class="name"><i class="material-icons">assignment_ind</i></md-icon>
+                        <md-icon class="name"><i class="material-icons">date_range</i></md-icon>
                         <input ng-model="config.maturityDate" type="number" required>
                     </md-input-container>
 
@@ -34,8 +40,8 @@
                     </md-input-container>
 
                     <md-input-container class="md-icon-float md-block">
-                        <label>Service Fee</label>
-                        <md-icon class="name"><i class="material-icons">date_range</i></md-icon>
+                        <label>Service Fee (PHP)</label>
+                        <md-icon class="name"><i class="material-icons">toll</i></md-icon>
                         <input ng-model="config.serviceFee" type="number">
                     </md-input-container>
 

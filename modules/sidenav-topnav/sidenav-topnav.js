@@ -85,7 +85,7 @@ myApp.controller('topBarController',
         $mdSidenav(id)
           .toggle()
           .then(function () {
-            $log.debug("toggle " + navID + " is done");
+            $log.debug("toggle " + id + " is done");
           });
       }, 200);
     }

@@ -16,8 +16,8 @@ var myApp = angular.module('myApp',
 
 myApp.config(function ($stateProvider, $mdThemingProvider) {
   $mdThemingProvider.theme('default')
-    .primaryPalette('blue')
-    .accentPalette('green');
+    .primaryPalette('green')
+    .accentPalette('blue');
 
   var loginState = {
     name: 'login',

@@ -34,6 +34,7 @@ myApp.service('writeService', function ($q, configService) {
                 var ref = db.ref('config')
                 ref.set(data)
                     .then(function (key) {
+                        resolve(key)
                     }, function (error) {
                         console.log(error)
                         reject(error)

@@ -1,6 +1,15 @@
 myApp.service('readService', function($q,configService){
     const db = firebase.database();
     var readServiceFunctions = {
+        config : function (){
+            return $q(function(resolve, reject){
+                var ref = db.ref('config');
+                ref.once('value')
+                .then(function(data){
+                    resolve(data.val());
+                })
+            })
+        },
         pawnees : function(user){
             return $q(function(resolve,reject){
                 var ref = db.ref('pawnees')
