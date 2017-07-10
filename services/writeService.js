@@ -18,6 +18,7 @@ myApp.service('writeService', function ($q, configService) {
         addItem: function (data) {
             return $q(function (resolve, reject) {
                 var ref = db.ref('items')
+                data.dateCreated = new Date().toISOString();
                 ref.push(data)
                     .then(function (key) {
                         resolve(key)

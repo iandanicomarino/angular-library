@@ -16,17 +16,19 @@
                         <md-card-title>
                             <md-card-title-text>
                                 <md-truncate class="md-headline">
-                                    {{item.title}}
+                                    {{item.year}} {{item.brand}} {{item.model}}
                                 </md-truncate>
-                                <span class="md-subhead">{{item.author}}</span>
+                                <span class="md-subhead">{{item.category}}, Owned by: {{item.owner.firstName}} {{item.owner.lastName}}</span>
                             </md-card-title-text>
                             <md-card-title-media>
-                                <div class="md-media-sm card-media"><i class="material-icons" style="font-size: 72px">library_items</i></div>
+                                <div class="md-media-sm card-media">
+                                    Valued as {{item.valuation}} Pawned as {{item.pawnValue}}
+                                </div>
                             </md-card-title-media>
                         </md-card-title>
                         <md-card-actions layout="row" layout-align="end center">
                             <md-button class="md-primary md-raised md-hue-1">View Details</md-button>
-                            <md-button class="md-warn md-raised md-hue-1">Item Transactions</md-button>
+                            <md-button class="md-warn md-raised md-hue-1">Item Options</md-button>
                         </md-card-actions>
                     </md-card>
                 </div>

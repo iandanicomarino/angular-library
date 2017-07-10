@@ -1,14 +1,13 @@
 myApp.controller('viewItemsController',
     function ($scope, $timeout, $mdSidenav, $log, readService, $mdDialog, configService) {
-        init();
+        // init();
 
         var db = firebase.database()
 
-        var ref = db.ref('items')
-
-        ref.on("child_changed", function(snapshot) {
-            init();
-        });
-
+        readService.items()
+        .then(function(data){
+            console.log(data);
+            $scope.items = data
+        })
     }
 )
