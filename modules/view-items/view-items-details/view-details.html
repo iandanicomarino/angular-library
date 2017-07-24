@@ -1,47 +1,4 @@
-<section layout="row">
-    <md-sidenav ng-include="'/modules/sidenav-topnav/sidenav.html'" class="md-sidenav-left" md-component-id="left" md-whiteframe="4"
-        ng-controller="topBarController">
-
-        </md-sidenav>
-
-        <md-content layout="column" flex>
-            <div layout="row" layout-align="top center" layout-wrap>
-                <h1>
-                    All Items
-                </h1>
-            </div>
-            <div layout="row" layout-wrap >
-                <div flex-xs=100 flex-sm=50 flex-md=50 flex-lg=33 flex-xl="25" ng-repeat="(key,item) in items">
-                    <md-card>
-                        <md-card-title>
-                            <md-card-title-text>
-                                <md-truncate class="md-headline">
-                                    {{item.year}} {{item.brand}} {{item.model}}
-                                </md-truncate>
-                                <span class="md-subhead">{{item.category}}, Owned by: {{item.owner.firstName}} {{item.owner.lastName}}</span>
-                            </md-card-title-text>
-                            <md-card-title-media>
-                                <div class="md-media-sm card-media">
-                                    Valued as {{item.valuation}} Pawned as {{item.pawnValue}}
-                                </div>
-                            </md-card-title-media>
-                        </md-card-title>
-                        <md-card-actions layout="row" layout-align="end center">
-                            <md-button class="md-primary md-raised md-hue-1" ng-click="viewItemDetails(item)">View Details</md-button>
-                            <md-button class="md-warn md-raised md-hue-1">Item Options</md-button>
-                        </md-card-actions>
-                    </md-card>
-                </div>
-
-            </div>
-
-        </md-content>
-</section>
-
-
-  <div style="visibility: hidden">
-    <div class="md-dialog-container" id="myDialog">
-      <md-dialog aria-label="View Details">
+<md-dialog aria-label="View Details" >
     <form ng-cloak ng-submit="addItems(item)">
         <md-toolbar>
             <div class="md-toolbar-tools">
@@ -55,9 +12,8 @@
 
         <md-dialog-content>
             <div class="md-dialog-content">
-                <h2>Item Info</h2>
+                <h2>Item Info {{interestingideas}}</h2>
                 <md-content class="md-no-momentum">
-
                     <md-input-container class="md-icon-float md-block">
                         <label>Item Category</label>
                         <md-icon class="name"><i class="material-icons">info</i></md-icon>
@@ -160,6 +116,3 @@
         </md-dialog-actions>
     </form>
 </md-dialog>
-    </div>
-  </div>
-
