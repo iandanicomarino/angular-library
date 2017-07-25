@@ -48,6 +48,7 @@ myApp.controller('viewItemsController',
         }
 
         function DialogController($scope, $mdDialog, interestingideas,item ) {
+            $scope.default.categories = ['Jewelry','Gadget','Property','Custom'] 
             $scope.item = item;
             $scope.interestingideas = interestingideas;
             console.log(item)
