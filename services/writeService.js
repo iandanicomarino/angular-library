@@ -19,6 +19,7 @@ myApp.service('writeService', function ($q, configService) {
             return $q(function (resolve, reject) {
                 var ref = db.ref('items')
                 data.dateCreated = new Date().toISOString();
+                data.timeCreated = new Date().getTime()
                 ref.push(data)
                     .then(function (key) {
                         resolve(key)
@@ -40,20 +41,6 @@ myApp.service('writeService', function ($q, configService) {
                         console.log(error)
                         reject(error)
                     })
-            })
-        },
-         editStudent : function(data,key){
-            return $q(function(resolve,reject){
-                var ref = db.ref('students/'+key)
-                ref.set(data)
-                .then(function(key){
-                    resolve(key)
-                    console.log(key)
-                    console.log(key.key)
-                },function(error){
-                    console.log(error)
-                    reject(error)
-                })
             })
         },
         
