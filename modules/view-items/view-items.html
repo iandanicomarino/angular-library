@@ -8,11 +8,19 @@
                 <md-tab label="Pawned Items">
                     <md-content class="md-padding">
                         <h1 class="md-display-2">Pawned Items</h1>
+                        <md-input-container class="md-block" flex="40">
+                            <label>Search...</label>
+                            <input ng-model="search.pawnedItems" ng-change="search(search.pawnedItems, 'pawnedItems')">
+                        </md-input-container>
                         <div layout="row" layout-wrap>
-                            <div ng-if="checkIfEmpty(items)">
+                            <div ng-show="checkIfEmpty(items) && loading==false ">
                                 No pawned items.
                             </div>
-                            <div  flex-xs="100" flex-sm="50" flex-md="50" flex-lg="33" flex-xl="25" ng-repeat="(key,item) in items">
+                            <div class="spinner" ng-show="loading==true">
+                                <div class="double-bounce1"></div>
+                                <div class="double-bounce2"></div>
+                            </div>
+                            <div flex-xs="100" flex-sm="50" flex-md="50" flex-lg="33" flex-xl="25" ng-repeat="(key,item) in items">
                                 <md-card>
                                     <md-card-title>
                                         <md-card-title-text>
@@ -38,12 +46,20 @@
                         </div>
                     </md-content>
                 </md-tab>
-                 <md-tab label="Returned Items">
+                <md-tab label="Returned Items">
                     <md-content class="md-padding">
                         <h1 class="md-display-2">Returned Items</h1>
+                        <md-input-container class="md-block" flex="40">
+                            <label>Search...</label>
+                            <input ng-model="search.returneditems" ng-change="search(search.returneditems, 'returnedItems')">
+                        </md-input-container>
                         <div layout="row" layout-wrap>
                             <div ng-if="checkIfEmpty(returneditems)">
                                 No returned items.
+                            </div>
+                            <div class="spinner" ng-show="loading==true">
+                                <div class="double-bounce1"></div>
+                                <div class="double-bounce2"></div>
                             </div>
                             <div flex-xs="100" flex-sm="50" flex-md="50" flex-lg="33" flex-xl="25" ng-repeat="(key,item) in returneditems">
                                 <md-card>
@@ -71,9 +87,17 @@
                 <md-tab label="Sellable Items">
                     <md-content class="md-padding">
                         <h1 class="md-display-2">Sellable Items</h1>
-                         <div ng-if="checkIfEmpty(sellableItems)">
+                        <md-input-container class="md-block" flex="40">
+                            <label>Search...</label>
+                            <input ng-model="search.sellableItems" ng-change="search(search.sellableItems, 'sellableItems')">
+                        </md-input-container>
+                        <div ng-if="checkIfEmpty(sellableItems)">
                             No sellable items.
-                         </div>
+                        </div>
+                        <div class="spinner" ng-show="loading==true">
+                            <div class="double-bounce1"></div>
+                            <div class="double-bounce2"></div>
+                        </div>
                         <div layout="row" layout-wrap>
                             <div flex-xs="100" flex-sm="50" flex-md="50" flex-lg="33" flex-xl="25" ng-repeat="(key,item) in sellableItems">
                                 <md-card>
@@ -92,7 +116,7 @@
                                     </md-card-title>
                                     <md-card-actions layout="row" layout-align="end center">
                                         <md-button class="md-primary md-raised md-hue-1" ng-click="viewItemDetails(item)">View Details</md-button>
-                                           <md-button class="md-warn md-raised md-hue-1" ng-click="sellItem($event,item,key)">Sell Item</md-button>
+                                        <md-button class="md-warn md-raised md-hue-1" ng-click="sellItem($event,item,key)">Sell Item</md-button>
                                     </md-card-actions>
                                 </md-card>
                             </div>
@@ -102,9 +126,17 @@
                 <md-tab label="Sold Items">
                     <md-content class="md-padding">
                         <h1 class="md-display-2">Sold Items</h1>
+                        <md-input-container class="md-block" flex="40">
+                            <label>Search...</label>
+                            <input ng-model="search.soldItems" ng-change="search(search.soldItems, 'soldItems')">
+                        </md-input-container>
                         <div ng-if="checkIfEmpty(soldItems)">
                             No sold items.
-                         </div>
+                        </div>
+                        <div class="spinner" ng-show="loading==true">
+                            <div class="double-bounce1"></div>
+                            <div class="double-bounce2"></div>
+                        </div>
                         <div layout="row" layout-wrap>
                             <div flex-xs="100" flex-sm="50" flex-md="50" flex-lg="33" flex-xl="25" ng-repeat="(key,item) in soldItems">
                                 <md-card>
@@ -113,8 +145,8 @@
                                             <md-truncate class="md-headline">
                                                 {{item.year}} {{item.brand}} {{item.model}}
                                             </md-truncate>
-                                            <span class="md-subhead">Gained vs Valuation: {{((item.soldAs-item.valuation)/item.valuation*100)+'%'}}</span>
-                                            <span class="md-subhead">Gained vs Pawn Value: {{((item.soldAs-item.pawnValue)/item.pawnValue)*100+'%'}}</span>
+                                            <span class="md-subhead">Gained vs Valuation: {{((item.soldAs-item.valuation)/item.valuation*100) | number: 2}} %</span>
+                                            <span class="md-subhead">Gained vs Pawn Value: {{((item.soldAs-item.pawnValue)/item.pawnValue)*100 | number: 2}} % </span>
                                         </md-card-title-text>
                                         <md-card-title-media>
                                             <div class="md-media-sm card-media">

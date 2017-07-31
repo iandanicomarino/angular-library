@@ -1,72 +1,142 @@
 myApp.controller('viewItemsController',
-    function ($q,$scope, $rootScope, $timeout, $mdToast, $mdSidenav, $log, readService, $mdDialog, configService, writeService) {
+    function ($q, $scope, $rootScope, $timeout, $mdToast, $mdSidenav, $log, readService, $mdDialog, configService, writeService) {
         // init();
 
         var db = firebase.database()
-        var storeConfig ={}
-
+        var storeConfig = {}
+        var original = {};
 
         init();
 
         function init() {
+            $scope.loading = true;
             readService.config()
                 .then(function (config) {
+                    $scope.loading = false;
                     storeConfig = config
                     readService.items()
                         .then(function (data) {
                             $scope.items = transferToSellable(data)
+                            original.items = $scope.items;
                             console.log($scope.items)
                         })
                     readService.returnedItems()
                         .then(function (data) {
                             $scope.returneditems = data;
+                            original.returneditems = $scope.returneditems;
                         })
                     readService.soldItems()
                         .then(function (data) {
                             $scope.soldItems = data;
+                            original.soldItems = $scope.soldItems;
                         })
-
                 })
-
         }
 
-        function transferToSellable (items){
-            var forTransfer = []; 
 
-            for (var key in items){
+        $scope.search = function (query, which) {
+            switch (which) {
+                case "pawnedItems":
+                    if (query == '' || query == undefined) {
+                        $scope.items = original.items;
+                    } else {
+                        $scope.items = searchQuery(original.items, query);
+                    }
+                    break;
+                case "returnedItems":
+                    if (query == '' || query == undefined) {
+                        $scope.returneditems = original.returneditems;
+                    } else {
+                        $scope.returneditems = searchQuery(original.returneditems, query);
+                    }
+                    break;
+                case "sellableItems":
+                    if (query == '' || query == undefined) {
+                        $scope.sellableItems = original.sellableItems;
+                    } else {
+                        $scope.sellableItems = searchQuery(original.sellableItems, query);
+                    }
+                    break;
+                 case "soldItems":
+                    if (query == '' || query == undefined) {
+                        $scope.soldItems = original.soldItems;
+                    } else {
+                        $scope.soldItems = searchQuery(original.soldItems, query);
+                    }
+                    break;
+            }
+        }
+
+        function searchQuery(object, query) {
+            var query = query.toLowerCase();
+            var object = angular.copy(object);
+            for (var key in object) {
+                var forreturn = false;
+                for (var key2 in object[key]) {
+                    if (typeof (object[key][key2]) == 'string') {
+
+                        if (object[key][key2].toLowerCase().includes(query)) {
+                            forreturn = true;
+                        }
+                    }
+                }
+
+                for (var key2 in object[key]['owner']) {
+                    if (typeof (object[key]['owner'][key2]) == 'string') {
+                        // console.log(object[key]['owner'][key2].toLowerCase());
+
+                        if (object[key]['owner'][key2].toLowerCase().includes(query)) {
+                            forreturn = true;
+                        }
+                    }
+                }
+
+
+                if (forreturn == false) {
+                    delete object[key];
+                }
+            }
+            return object;
+        }
+
+        function transferToSellable(items) {
+            var forTransfer = [];
+
+            for (var key in items) {
                 var expiryDate = new Date(items[key].expiryDate);
                 var dateNow = new Date()
                 var dataForTranfer = {};
-                if(expiryDate < dateNow){
+                if (expiryDate < dateNow) {
                     dataForTranfer.key = key;
                     dataForTranfer.data = items[key];
                     forTransfer.push(dataForTranfer);
-                    console.log('delete'+items+key)
+                    console.log('delete' + items + key)
                     delete items[key];
                 }
             }
 
             var promises = [];
 
-            forTransfer.forEach(function(data){
-                promises.push(writeService.transferToSellable(data.data,data.key))
+            forTransfer.forEach(function (data) {
+                promises.push(writeService.transferToSellable(data.data, data.key))
             })
 
             $q.all(promises)
-            .then(function(resolved){
-                var toast = $mdToast.simple()
-                        .textContent('Transferred '+ resolved.length+ ' items to sellable')
+                .then(function (resolved) {
+                    var toast = $mdToast.simple()
+                        .textContent('Transferred ' + resolved.length + ' items to sellable')
                         .highlightAction(true)
                         .highlightClass('md-accent')
                         .position('bottom left right');
 
-                $mdToast.show(toast);
-            })
+                    $mdToast.show(toast);
+                })
 
-             readService.sellableItems()
-             .then(function(data){
-                 $scope.sellableItems = data;
-             })
+            readService.sellableItems()
+                .then(function (data) {
+                    $scope.sellableItems = data;
+                    original.sellableItems = $scope.sellableItems;
+                })
             return items;
 
         }
@@ -94,10 +164,10 @@ myApp.controller('viewItemsController',
                 });
         }
 
-        $scope.sellItem = function(ev,item,key){
+        $scope.sellItem = function (ev, item, key) {
 
-             var confirm = $mdDialog.prompt()
-                .title('Sell this item? '+item.brand + ' '+ item.model)
+            var confirm = $mdDialog.prompt()
+                .title('Sell this item? ' + item.brand + ' ' + item.model)
                 .htmlContent("<p>Enter Amount.<p>")
                 .placeholder('0.00')
                 .ariaLabel('Amount')
@@ -106,31 +176,31 @@ myApp.controller('viewItemsController',
                 .ok('Sell Item')
                 .cancel('Cancel');
             $mdDialog.show(confirm)
-            .then(function (result) {
-                if (isNaN(result)) {
-                    var toast = $mdToast.simple()
-                        .textContent('Amount not valid please input as 0.00')
-                        .highlightAction(true)
-                        .highlightClass('md-accent')
-                        .position('bottom left right');
-                    $mdToast.show(toast);
-                    $scope.invalidAmount = true;
-                    $scope.sellItem(ev, item, key);
-                } else{
-                    item.soldAs = result;
-                     var toast = $mdToast.simple()
-                        .textContent('Sold Item @ PHP'+result)
-                        .highlightAction(true)
-                        .highlightClass('md-accent')
-                        .position('bottom left right');
-                    $mdToast.show(toast);
-                    writeService.sellItem(item, key)
-                    .then(function (data) {
-                        init();
-                    })
-                }
+                .then(function (result) {
+                    if (isNaN(result)) {
+                        var toast = $mdToast.simple()
+                            .textContent('Amount not valid please input as 0.00')
+                            .highlightAction(true)
+                            .highlightClass('md-accent')
+                            .position('bottom left right');
+                        $mdToast.show(toast);
+                        $scope.invalidAmount = true;
+                        $scope.sellItem(ev, item, key);
+                    } else {
+                        item.soldAs = result;
+                        var toast = $mdToast.simple()
+                            .textContent('Sold Item @ PHP' + result)
+                            .highlightAction(true)
+                            .highlightClass('md-accent')
+                            .position('bottom left right');
+                        $mdToast.show(toast);
+                        writeService.sellItem(item, key)
+                            .then(function (data) {
+                                init();
+                            })
+                    }
 
-            })
+                })
 
         }
 
@@ -139,12 +209,12 @@ myApp.controller('viewItemsController',
             console.log(item)
             var now = new moment();
             var timecreated = new moment(item.dateCreated);
-            var daysOnHand = now.diff(timecreated,'days');
-            if(daysOnHand == 0){
+            var daysOnHand = now.diff(timecreated, 'days');
+            if (daysOnHand == 0) {
                 daysOnHand++;
             }
             console.log(daysOnHand);
-            var buyBackValue = item.pawnValue + (item.pawnValue * (storeConfig.defaultInterestPercentage/100) * Math.ceil(daysOnHand/storeConfig.expiryDate))
+            var buyBackValue = item.pawnValue + (item.pawnValue * (storeConfig.defaultInterestPercentage / 100) * Math.ceil(daysOnHand / storeConfig.expiryDate))
             buyBackValue = Number((buyBackValue).toFixed(2))
 
             var confirm = $mdDialog.prompt()
@@ -179,7 +249,7 @@ myApp.controller('viewItemsController',
             });
         };
 
-        $scope.extendDate = function (ev,item,key) {
+        $scope.extendDate = function (ev, item, key) {
             var confirm = $mdDialog.prompt()
                 .title('Extend Date')
                 .htmlContent("<p>Enter Amount.<p>")
@@ -201,32 +271,32 @@ myApp.controller('viewItemsController',
                     $mdToast.show(toast);
                     $scope.invalidAmount = true;
                     $scope.showPrompt();
-                }else{
+                } else {
                     console.log(item)
-                    var newDate = new Date(moment(item.expiryDate).add(storeConfig.expiryDate,'days'))
+                    var newDate = new Date(moment(item.expiryDate).add(storeConfig.expiryDate, 'days'))
                     item.expiryDate = newDate.toISOString();
                     console.log(item.expiryDate)
-                    writeService.editItem(item,key)
-                    .then(function(data){
-                         var toast = $mdToast.simple()
-                            .textContent('Item expiry extended')
-                            .highlightAction(true)
-                            .highlightClass('md-accent')
-                            .position('bottom left right');
-                        $mdToast.show(toast);
-                    })
+                    writeService.editItem(item, key)
+                        .then(function (data) {
+                            var toast = $mdToast.simple()
+                                .textContent('Item expiry extended')
+                                .highlightAction(true)
+                                .highlightClass('md-accent')
+                                .position('bottom left right');
+                            $mdToast.show(toast);
+                        })
                 }
-                
+
             }, function () {
                 $scope.status = 'You didn\'t name your dog.';
             });
         };
 
-        $scope.checkIfEmpty = function (obj){
-            if (obj == null || obj == undefined){
+        $scope.checkIfEmpty = function (obj) {
+            if (obj == null || obj == undefined) {
                 return true;
             }
-            return Object.keys(obj).length == 0? true:false;
+            return Object.keys(obj).length == 0 ? true : false;
         }
 
 
