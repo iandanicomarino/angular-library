@@ -9,9 +9,9 @@
                     <md-content class="md-padding">
                         <h1 class="md-display-2">Pawned Items</h1>
                         <div layout="row" layout-wrap>
-                            <!--<div ng-if="items.">
-
-                            </div>-->
+                            <div ng-if="checkIfEmpty(items)">
+                                No pawned items.
+                            </div>
                             <div  flex-xs="100" flex-sm="50" flex-md="50" flex-lg="33" flex-xl="25" ng-repeat="(key,item) in items">
                                 <md-card>
                                     <md-card-title>
@@ -42,6 +42,9 @@
                     <md-content class="md-padding">
                         <h1 class="md-display-2">Returned Items</h1>
                         <div layout="row" layout-wrap>
+                            <div ng-if="checkIfEmpty(returneditems)">
+                                No returned items.
+                            </div>
                             <div flex-xs="100" flex-sm="50" flex-md="50" flex-lg="33" flex-xl="25" ng-repeat="(key,item) in returneditems">
                                 <md-card>
                                     <md-card-title>
@@ -68,6 +71,9 @@
                 <md-tab label="Sellable Items">
                     <md-content class="md-padding">
                         <h1 class="md-display-2">Sellable Items</h1>
+                         <div ng-if="checkIfEmpty(sellableItems)">
+                            No sellable items.
+                         </div>
                         <div layout="row" layout-wrap>
                             <div flex-xs="100" flex-sm="50" flex-md="50" flex-lg="33" flex-xl="25" ng-repeat="(key,item) in sellableItems">
                                 <md-card>
@@ -95,11 +101,33 @@
                 </md-tab>
                 <md-tab label="Sold Items">
                     <md-content class="md-padding">
-                        <h1 class="md-display-2">Tab Three</h1>
-                        <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie
-                            dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere
-                            mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula
-                            diam, congue eu enim scelerisque, finibus commodo lectus.</p>
+                        <h1 class="md-display-2">Sold Items</h1>
+                        <div ng-if="checkIfEmpty(soldItems)">
+                            No sold items.
+                         </div>
+                        <div layout="row" layout-wrap>
+                            <div flex-xs="100" flex-sm="50" flex-md="50" flex-lg="33" flex-xl="25" ng-repeat="(key,item) in soldItems">
+                                <md-card>
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <md-truncate class="md-headline">
+                                                {{item.year}} {{item.brand}} {{item.model}}
+                                            </md-truncate>
+                                            <span class="md-subhead">Gained vs Valuation: {{((item.soldAs-item.valuation)/item.valuation*100)+'%'}}</span>
+                                            <span class="md-subhead">Gained vs Pawn Value: {{((item.soldAs-item.pawnValue)/item.pawnValue)*100+'%'}}</span>
+                                        </md-card-title-text>
+                                        <md-card-title-media>
+                                            <div class="md-media-sm card-media">
+                                                Valued as {{item.valuation}} <br> Sold as {{item.soldAs}}
+                                            </div>
+                                        </md-card-title-media>
+                                    </md-card-title>
+                                    <md-card-actions layout="row" layout-align="end center">
+                                        <md-button class="md-primary md-raised md-hue-1" ng-click="viewItemDetails(item)">View Original Details</md-button>
+                                    </md-card-actions>
+                                </md-card>
+                            </div>
+                        </div>
                     </md-content>
                 </md-tab>
             </md-tabs>

@@ -19,8 +19,13 @@ myApp.controller('viewItemsController',
                         })
                     readService.returnedItems()
                         .then(function (data) {
-                            $scope.returneditems = data
+                            $scope.returneditems = data;
                         })
+                    readService.soldItems()
+                        .then(function (data) {
+                            $scope.soldItems = data;
+                        })
+
                 })
 
         }
@@ -87,6 +92,46 @@ myApp.controller('viewItemsController',
                 }, function () {
                     $scope.status = 'You cancelled the dialog.';
                 });
+        }
+
+        $scope.sellItem = function(ev,item,key){
+
+             var confirm = $mdDialog.prompt()
+                .title('Sell this item? '+item.brand + ' '+ item.model)
+                .htmlContent("<p>Enter Amount.<p>")
+                .placeholder('0.00')
+                .ariaLabel('Amount')
+                .initialValue('0.00')
+                .targetEvent(ev)
+                .ok('Sell Item')
+                .cancel('Cancel');
+            $mdDialog.show(confirm)
+            .then(function (result) {
+                if (isNaN(result)) {
+                    var toast = $mdToast.simple()
+                        .textContent('Amount not valid please input as 0.00')
+                        .highlightAction(true)
+                        .highlightClass('md-accent')
+                        .position('bottom left right');
+                    $mdToast.show(toast);
+                    $scope.invalidAmount = true;
+                    $scope.sellItem(ev, item, key);
+                } else{
+                    item.soldAs = result;
+                     var toast = $mdToast.simple()
+                        .textContent('Sold Item @ PHP'+result)
+                        .highlightAction(true)
+                        .highlightClass('md-accent')
+                        .position('bottom left right');
+                    $mdToast.show(toast);
+                    writeService.sellItem(item, key)
+                    .then(function (data) {
+                        init();
+                    })
+                }
+
+            })
+
         }
 
 
@@ -176,6 +221,13 @@ myApp.controller('viewItemsController',
                 $scope.status = 'You didn\'t name your dog.';
             });
         };
+
+        $scope.checkIfEmpty = function (obj){
+            if (obj == null || obj == undefined){
+                return true;
+            }
+            return Object.keys(obj).length == 0? true:false;
+        }
 
 
         function viewItemDetails($scope, $mdDialog, item) {

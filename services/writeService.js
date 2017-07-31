@@ -80,7 +80,26 @@ myApp.service('writeService', function ($q, configService) {
                             .then(function (key) {
                                 resolve(key)
                                 console.log(key)
-                                console.log(key.key)
+                            }, function (error) {
+                                console.log(error)
+                                reject(error)
+                            })
+                    })
+            })
+        },
+        sellItem: function (data, key) {
+            return $q(function (resolve, reject) {
+                var ref1 = db.ref('sellable-items/' + key);
+                ref1.remove()
+                    .then(function (resolved) {
+                        var ref = db.ref('sold-items/' + key)
+                        data.dateCreated = new Date().toISOString();
+                        data.timeCreated = new Date().getTime()
+                        data.status = 'SOLD'
+                        ref.set(data)
+                            .then(function (key) {
+                                resolve(key)
+                                console.log(key)
                             }, function (error) {
                                 console.log(error)
                                 reject(error)
