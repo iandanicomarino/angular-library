@@ -42,6 +42,17 @@ myApp.service('readService', function($q,configService){
                     reject(error)
                 })
             })
+        },
+        sellableItems : function(user){
+            return $q(function(resolve,reject){
+                var ref = db.ref('sellable-items')
+                ref.once('value')
+                .then(function(snapshot){
+                    resolve(snapshot.val());
+                },function(error){
+                    reject(error)
+                })
+            })
         }
     }
     return readServiceFunctions;

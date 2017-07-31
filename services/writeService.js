@@ -32,25 +32,60 @@ myApp.service('writeService', function ($q, configService) {
                     })
             })
         },
-        returnItem: function (data,key) {
+        editItem: function (data, key) {
             return $q(function (resolve, reject) {
-                var ref1 = db.ref('items/'+key);
-                ref1.remove()
-                .then(function(resolved){
-                var ref = db.ref('returned-items/'+key)
-                data.dateCreated = new Date().toISOString();
-                data.timeCreated = new Date().getTime()
-                data.status = 'returned'
+                var ref = db.ref('items/' + key)
+                data.updatedAt = new Date().toISOString();
+                data.status = 'PAWNED'
                 ref.set(data)
                     .then(function (key) {
-                        resolve(key)
-                        console.log(key)
-                        console.log(key.key)
+                        resolve()
                     }, function (error) {
                         console.log(error)
                         reject(error)
                     })
-                })
+            })
+        },
+        transferToSellable: function (data, key) {
+            return $q(function (resolve, reject) {
+                var ref1 = db.ref('items/' + key);
+                ref1.remove()
+                    .then(function (resolved) {
+                        var ref = db.ref('sellable-items/' + key)
+                        data.dateCreated = new Date().toISOString();
+                        data.timeCreated = new Date().getTime()
+                        data.status = 'SELLABLE'
+                        ref.set(data)
+                            .then(function (key) {
+                                resolve(key)
+                                console.log(key)
+                                console.log(key.key)
+                            }, function (error) {
+                                console.log(error)
+                                reject(error)
+                            })
+                    })
+            })
+        },
+        returnItem: function (data, key) {
+            return $q(function (resolve, reject) {
+                var ref1 = db.ref('items/' + key);
+                ref1.remove()
+                    .then(function (resolved) {
+                        var ref = db.ref('returned-items/' + key)
+                        data.dateCreated = new Date().toISOString();
+                        data.timeCreated = new Date().getTime()
+                        data.status = 'RETURNED'
+                        ref.set(data)
+                            .then(function (key) {
+                                resolve(key)
+                                console.log(key)
+                                console.log(key.key)
+                            }, function (error) {
+                                console.log(error)
+                                reject(error)
+                            })
+                    })
             })
         },
         setConfig: function (data) {
@@ -65,7 +100,7 @@ myApp.service('writeService', function ($q, configService) {
                     })
             })
         },
-        
+
     }
     return writeServiceFunctions;
 })

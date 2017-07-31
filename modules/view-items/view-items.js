@@ -1,5 +1,5 @@
 myApp.controller('viewItemsController',
-    function ($scope, $rootScope, $timeout, $mdToast, $mdSidenav, $log, readService, $mdDialog, configService, writeService) {
+    function ($q,$scope, $rootScope, $timeout, $mdToast, $mdSidenav, $log, readService, $mdDialog, configService, writeService) {
         // init();
 
         var db = firebase.database()
@@ -14,13 +14,55 @@ myApp.controller('viewItemsController',
                     storeConfig = config
                     readService.items()
                         .then(function (data) {
-                            $scope.items = data
+                            $scope.items = transferToSellable(data)
+                            console.log($scope.items)
                         })
                     readService.returnedItems()
                         .then(function (data) {
                             $scope.returneditems = data
                         })
                 })
+
+        }
+
+        function transferToSellable (items){
+            var forTransfer = []; 
+
+            for (var key in items){
+                var expiryDate = new Date(items[key].expiryDate);
+                var dateNow = new Date()
+                var dataForTranfer = {};
+                if(expiryDate < dateNow){
+                    dataForTranfer.key = key;
+                    dataForTranfer.data = items[key];
+                    forTransfer.push(dataForTranfer);
+                    console.log('delete'+items+key)
+                    delete items[key];
+                }
+            }
+
+            var promises = [];
+
+            forTransfer.forEach(function(data){
+                promises.push(writeService.transferToSellable(data.data,data.key))
+            })
+
+            $q.all(promises)
+            .then(function(resolved){
+                var toast = $mdToast.simple()
+                        .textContent('Transferred '+ resolved.length+ ' items to sellable')
+                        .highlightAction(true)
+                        .highlightClass('md-accent')
+                        .position('bottom left right');
+
+                $mdToast.show(toast);
+            })
+
+             readService.sellableItems()
+             .then(function(data){
+                 $scope.sellableItems = data;
+             })
+            return items;
 
         }
 
@@ -53,6 +95,9 @@ myApp.controller('viewItemsController',
             var now = new moment();
             var timecreated = new moment(item.dateCreated);
             var daysOnHand = now.diff(timecreated,'days');
+            if(daysOnHand == 0){
+                daysOnHand++;
+            }
             console.log(daysOnHand);
             var buyBackValue = item.pawnValue + (item.pawnValue * (storeConfig.defaultInterestPercentage/100) * Math.ceil(daysOnHand/storeConfig.expiryDate))
             buyBackValue = Number((buyBackValue).toFixed(2))
@@ -84,14 +129,12 @@ myApp.controller('viewItemsController',
                             init();
                         })
                 }
-
-                $scope.invalidAmount = false;
             }, function () {
                 $scope.status = 'You didn\'t name your dog.';
             });
         };
 
-        $scope.extendDate = function (ev) {
+        $scope.extendDate = function (ev,item,key) {
             var confirm = $mdDialog.prompt()
                 .title('Extend Date')
                 .htmlContent("<p>Enter Amount.<p>")
@@ -99,7 +142,7 @@ myApp.controller('viewItemsController',
                 .ariaLabel('Amount')
                 .initialValue('0.00')
                 .targetEvent(ev)
-                .ok('Return Item')
+                .ok('Extend Item')
                 .cancel('Cancel');
 
             $mdDialog.show(confirm).then(function (result) {
@@ -113,8 +156,22 @@ myApp.controller('viewItemsController',
                     $mdToast.show(toast);
                     $scope.invalidAmount = true;
                     $scope.showPrompt();
+                }else{
+                    console.log(item)
+                    var newDate = new Date(moment(item.expiryDate).add(storeConfig.expiryDate,'days'))
+                    item.expiryDate = newDate.toISOString();
+                    console.log(item.expiryDate)
+                    writeService.editItem(item,key)
+                    .then(function(data){
+                         var toast = $mdToast.simple()
+                            .textContent('Item expiry extended')
+                            .highlightAction(true)
+                            .highlightClass('md-accent')
+                            .position('bottom left right');
+                        $mdToast.show(toast);
+                    })
                 }
-                $scope.invalidAmount = false;
+                
             }, function () {
                 $scope.status = 'You didn\'t name your dog.';
             });

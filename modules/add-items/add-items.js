@@ -4,9 +4,10 @@ myApp.controller('addItemsController',
     $scope.default = {};
     $scope.default.categories = ['Jewelry','Gadget','Property','Custom'] 
     var appraisalPercentage = 0;
-
+    var storeConfig = {};
     readService.config()
     .then(function (data){
+        storeConfig = data;
         appraisalPercentage = data.appraisalPercentage
     })
 
@@ -20,6 +21,7 @@ myApp.controller('addItemsController',
     })
 
     $scope.addItems = function (item) {
+        item.expiryDate = new moment().add(storeConfig.expiryDate,'days').toISOString();
         writeService.addItem(item)
         .then(function(data){
             configService.showToast('Added an item to the inventory')

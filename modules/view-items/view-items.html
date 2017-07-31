@@ -8,8 +8,11 @@
                 <md-tab label="Pawned Items">
                     <md-content class="md-padding">
                         <h1 class="md-display-2">Pawned Items</h1>
-                        <div layout="row">
-                            <div flex-xs=100 flex-sm=50 flex-md=50 flex-lg=33 flex-xl="25" ng-repeat="(key,item) in items">
+                        <div layout="row" layout-wrap>
+                            <!--<div ng-if="items.">
+
+                            </div>-->
+                            <div  flex-xs="100" flex-sm="50" flex-md="50" flex-lg="33" flex-xl="25" ng-repeat="(key,item) in items">
                                 <md-card>
                                     <md-card-title>
                                         <md-card-title-text>
@@ -17,6 +20,7 @@
                                                 {{item.year}} {{item.brand}} {{item.model}}
                                             </md-truncate>
                                             <span class="md-subhead">{{item.category}}, Owned by: {{item.owner.firstName}} {{item.owner.lastName}}</span>
+                                            <span class="md-subhead">Expired by: {{item.expiryDate | date: 'shortDate'}}</span>
                                         </md-card-title-text>
                                         <md-card-title-media>
                                             <div class="md-media-sm card-media">
@@ -26,7 +30,7 @@
                                     </md-card-title>
                                     <md-card-actions layout="row" layout-align="end center">
                                         <md-button class="md-primary md-raised md-hue-1" ng-click="viewItemDetails(item)">View Details</md-button>
-                                        <md-button class="md-warn md-raised md-hue-1" ng-click="extendDate()">Extend Date</md-button>
+                                        <md-button class="md-warn md-raised md-hue-1" ng-click="extendDate($event,item,key)">Extend Date</md-button>
                                         <md-button class="md-raised md-hue-1" ng-click="returnItem($event,item,key)">Return Items</md-button>
                                     </md-card-actions>
                                 </md-card>
@@ -37,15 +41,15 @@
                  <md-tab label="Returned Items">
                     <md-content class="md-padding">
                         <h1 class="md-display-2">Returned Items</h1>
-                        <div layout="row">
-                            <div flex-xs=100 flex-sm=50 flex-md=50 flex-lg=33 flex-xl="25" ng-repeat="(key,item) in returneditems">
+                        <div layout="row" layout-wrap>
+                            <div flex-xs="100" flex-sm="50" flex-md="50" flex-lg="33" flex-xl="25" ng-repeat="(key,item) in returneditems">
                                 <md-card>
                                     <md-card-title>
                                         <md-card-title-text>
                                             <md-truncate class="md-headline">
                                                 {{item.year}} {{item.brand}} {{item.model}}
                                             </md-truncate>
-                                            <span class="md-subhead">{{item.category}}, Returend to: {{item.owner.firstName}} {{item.owner.lastName}}</span>
+                                            <span class="md-subhead">{{item.category}}, Returned to: {{item.owner.firstName}} {{item.owner.lastName}}</span>
                                         </md-card-title-text>
                                         <md-card-title-media>
                                             <div class="md-media-sm card-media">
@@ -55,8 +59,6 @@
                                     </md-card-title>
                                     <md-card-actions layout="row" layout-align="end center">
                                         <md-button class="md-primary md-raised md-hue-1" ng-click="viewItemDetails(item)">View Details</md-button>
-                                        <md-button class="md-warn md-raised md-hue-1" ng-click="extendDate()">Extend Date</md-button>
-                                        <md-button class="md-raised md-hue-1" ng-click="returnItem($event,item,key)">Return Items</md-button>
                                     </md-card-actions>
                                 </md-card>
                             </div>
@@ -65,11 +67,30 @@
                 </md-tab>
                 <md-tab label="Sellable Items">
                     <md-content class="md-padding">
-                        <h1 class="md-display-2">Tab Three</h1>
-                        <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie
-                            dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere
-                            mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula
-                            diam, congue eu enim scelerisque, finibus commodo lectus.</p>
+                        <h1 class="md-display-2">Sellable Items</h1>
+                        <div layout="row" layout-wrap>
+                            <div flex-xs="100" flex-sm="50" flex-md="50" flex-lg="33" flex-xl="25" ng-repeat="(key,item) in sellableItems">
+                                <md-card>
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <md-truncate class="md-headline">
+                                                {{item.year}} {{item.brand}} {{item.model}}
+                                            </md-truncate>
+                                            <span class="md-subhead">{{item.category}}, Originally pawned to: {{item.owner.firstName}} {{item.owner.lastName}}</span>
+                                        </md-card-title-text>
+                                        <md-card-title-media>
+                                            <div class="md-media-sm card-media">
+                                                Sell as {{item.valuation}} Pawned as {{item.pawnValue}}
+                                            </div>
+                                        </md-card-title-media>
+                                    </md-card-title>
+                                    <md-card-actions layout="row" layout-align="end center">
+                                        <md-button class="md-primary md-raised md-hue-1" ng-click="viewItemDetails(item)">View Details</md-button>
+                                           <md-button class="md-warn md-raised md-hue-1" ng-click="sellItem($event,item,key)">Sell Item</md-button>
+                                    </md-card-actions>
+                                </md-card>
+                            </div>
+                        </div>
                     </md-content>
                 </md-tab>
                 <md-tab label="Sold Items">
