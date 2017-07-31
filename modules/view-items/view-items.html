@@ -1,165 +1,212 @@
 <section layout="row">
     <md-sidenav ng-include="'/modules/sidenav-topnav/sidenav.html'" class="md-sidenav-left" md-component-id="left" md-whiteframe="4"
         ng-controller="topBarController">
-
         </md-sidenav>
 
-        <md-content layout="column" flex>
-            <div layout="row" layout-align="top center" layout-wrap>
-                <h1>
-                    All Items
-                </h1>
-            </div>
-            <div layout="row" layout-wrap >
-                <div flex-xs=100 flex-sm=50 flex-md=50 flex-lg=33 flex-xl="25" ng-repeat="(key,item) in items">
-                    <md-card>
-                        <md-card-title>
-                            <md-card-title-text>
-                                <md-truncate class="md-headline">
-                                    {{item.year}} {{item.brand}} {{item.model}}
-                                </md-truncate>
-                                <span class="md-subhead">{{item.category}}, Owned by: {{item.owner.firstName}} {{item.owner.lastName}}</span>
-                            </md-card-title-text>
-                            <md-card-title-media>
-                                <div class="md-media-sm card-media">
-                                    Valued as {{item.valuation}} Pawned as {{item.pawnValue}}
-                                </div>
-                            </md-card-title-media>
-                        </md-card-title>
-                        <md-card-actions layout="row" layout-align="end center">
-                            <md-button class="md-primary md-raised md-hue-1" ng-click="viewItemDetails(item)">View Details</md-button>
-                            <md-button class="md-warn md-raised md-hue-1">Item Options</md-button>
-                        </md-card-actions>
-                    </md-card>
-                </div>
+        <div flex="100">
+            <md-tabs md-dynamic-height>
+                <md-tab label="Pawned Items">
+                    <md-content class="md-padding">
+                        <h1 class="md-display-2">Pawned Items</h1>
+                        <div layout="row">
+                            <div flex-xs=100 flex-sm=50 flex-md=50 flex-lg=33 flex-xl="25" ng-repeat="(key,item) in items">
+                                <md-card>
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <md-truncate class="md-headline">
+                                                {{item.year}} {{item.brand}} {{item.model}}
+                                            </md-truncate>
+                                            <span class="md-subhead">{{item.category}}, Owned by: {{item.owner.firstName}} {{item.owner.lastName}}</span>
+                                        </md-card-title-text>
+                                        <md-card-title-media>
+                                            <div class="md-media-sm card-media">
+                                                Valued as {{item.valuation}} Pawned as {{item.pawnValue}}
+                                            </div>
+                                        </md-card-title-media>
+                                    </md-card-title>
+                                    <md-card-actions layout="row" layout-align="end center">
+                                        <md-button class="md-primary md-raised md-hue-1" ng-click="viewItemDetails(item)">View Details</md-button>
+                                        <md-button class="md-warn md-raised md-hue-1" ng-click="extendDate()">Extend Date</md-button>
+                                        <md-button class="md-raised md-hue-1" ng-click="returnItem($event,item,key)">Return Items</md-button>
+                                    </md-card-actions>
+                                </md-card>
+                            </div>
+                        </div>
+                    </md-content>
+                </md-tab>
+                 <md-tab label="Returned Items">
+                    <md-content class="md-padding">
+                        <h1 class="md-display-2">Returned Items</h1>
+                        <div layout="row">
+                            <div flex-xs=100 flex-sm=50 flex-md=50 flex-lg=33 flex-xl="25" ng-repeat="(key,item) in returneditems">
+                                <md-card>
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <md-truncate class="md-headline">
+                                                {{item.year}} {{item.brand}} {{item.model}}
+                                            </md-truncate>
+                                            <span class="md-subhead">{{item.category}}, Returend to: {{item.owner.firstName}} {{item.owner.lastName}}</span>
+                                        </md-card-title-text>
+                                        <md-card-title-media>
+                                            <div class="md-media-sm card-media">
+                                                Pawned as {{item.pawnValue}} Bought as {{item.buyBackValue}}
+                                            </div>
+                                        </md-card-title-media>
+                                    </md-card-title>
+                                    <md-card-actions layout="row" layout-align="end center">
+                                        <md-button class="md-primary md-raised md-hue-1" ng-click="viewItemDetails(item)">View Details</md-button>
+                                        <md-button class="md-warn md-raised md-hue-1" ng-click="extendDate()">Extend Date</md-button>
+                                        <md-button class="md-raised md-hue-1" ng-click="returnItem($event,item,key)">Return Items</md-button>
+                                    </md-card-actions>
+                                </md-card>
+                            </div>
+                        </div>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Sellable Items">
+                    <md-content class="md-padding">
+                        <h1 class="md-display-2">Tab Three</h1>
+                        <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie
+                            dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere
+                            mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula
+                            diam, congue eu enim scelerisque, finibus commodo lectus.</p>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Sold Items">
+                    <md-content class="md-padding">
+                        <h1 class="md-display-2">Tab Three</h1>
+                        <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie
+                            dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere
+                            mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula
+                            diam, congue eu enim scelerisque, finibus commodo lectus.</p>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </div>
 
-            </div>
-
-        </md-content>
 </section>
 
 
-  <div style="visibility: hidden">
-    <div class="md-dialog-container" id="myDialog">
-      <md-dialog aria-label="View Details">
-    <form ng-cloak ng-submit="addItems(item)">
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <h2>Add Items</h2>
-                <span flex></span>
-                <md-button class="md-icon-button" ng-click="cancel()">
-                    <i class="material-icons">close</i>
-                </md-button>
-            </div>
-        </md-toolbar>
+<div style="visibility: hidden">
+    <div class="md-dialog-container" id="itemDetailsDialog">
+        <md-dialog aria-label="View Details">
+            <form ng-cloak ng-submit="addItems(item)">
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2>Add Items</h2>
+                        <span flex></span>
+                        <md-button class="md-icon-button" ng-click="cancel()">
+                            <i class="material-icons">close</i>
+                        </md-button>
+                    </div>
+                </md-toolbar>
 
-        <md-dialog-content>
-            <div class="md-dialog-content">
-                <h2>Item Info</h2>
-                <md-content class="md-no-momentum">
+                <md-dialog-content>
+                    <div class="md-dialog-content">
+                        <h2>Item Info</h2>
+                        <md-content class="md-no-momentum">
 
-                    <md-input-container class="md-icon-float md-block">
-                        <label>Item Category</label>
-                        <md-icon class="name"><i class="material-icons">info</i></md-icon>
-                        <md-select ng-model="item.category" style="height: 40px;">
-                            <md-option><em>None</em></md-option>
-                            <md-option ng-repeat="value in default.categories" ng-value="value">
-                            {{value}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
+                            <md-input-container class="md-icon-float md-block">
+                                <label>Item Category</label>
+                                <md-icon class="name"><i class="material-icons">info</i></md-icon>
+                                <md-select ng-model="item.category" style="height: 40px;">
+                                    <md-option><em>None</em></md-option>
+                                    <md-option ng-repeat="value in default.categories" ng-value="value">
+                                        {{value}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
 
-                     <md-input-container class="md-icon-float md-block">
-                        <label>Item Brand</label>
-                        <md-icon class="name"><i class="material-icons">local_offer</i></md-icon>
-                        <input ng-model="item.brand" type="text" required>
-                    </md-input-container>
-                    
-                    <md-input-container class="md-icon-float md-block">
-                        <label>Item Model</label>
-                        <md-icon class="name"><i class="material-icons">layers</i></md-icon>
-                        <input ng-model="item.model" type="text" required>
-                    </md-input-container>
+                            <md-input-container class="md-icon-float md-block">
+                                <label>Item Brand</label>
+                                <md-icon class="name"><i class="material-icons">local_offer</i></md-icon>
+                                <input ng-model="item.brand" type="text" required>
+                            </md-input-container>
 
-                     <md-input-container class="md-icon-float md-block">
-                        <label>Item Serial</label>
-                        <md-icon class="name"><i class="material-icons">perm_device_information</i></md-icon>
-                        <input ng-model="item.serial" type="text" required>
-                    </md-input-container>
+                            <md-input-container class="md-icon-float md-block">
+                                <label>Item Model</label>
+                                <md-icon class="name"><i class="material-icons">layers</i></md-icon>
+                                <input ng-model="item.model" type="text" required>
+                            </md-input-container>
 
-                     <md-input-container class="md-icon-float md-block">
-                        <label>Item Color</label>
-                        <md-icon class="name"><i class="material-icons">invert_colors</i></md-icon>
-                        <input ng-model="item.color" type="text" required>
-                    </md-input-container>
+                            <md-input-container class="md-icon-float md-block">
+                                <label>Item Serial</label>
+                                <md-icon class="name"><i class="material-icons">perm_device_information</i></md-icon>
+                                <input ng-model="item.serial" type="text" required>
+                            </md-input-container>
 
-                    <md-input-container class="md-icon-float md-block">
-                        <label>Item Year</label>
-                        <md-icon class="name"><i class="material-icons">date_range</i></md-icon>
-                        <input ng-model="item.year" type="text" required>
-                    </md-input-container>
+                            <md-input-container class="md-icon-float md-block">
+                                <label>Item Color</label>
+                                <md-icon class="name"><i class="material-icons">invert_colors</i></md-icon>
+                                <input ng-model="item.color" type="text" required>
+                            </md-input-container>
 
-                      <md-input-container class="md-icon-float md-block">
-                        <label>Owner's Firstname</label>
-                        <md-icon class="name"><i class="material-icons">person_pin</i></md-icon>
-                        <input ng-model="item.owner.firstName" type="text" required>
-                    </md-input-container>
+                            <md-input-container class="md-icon-float md-block">
+                                <label>Item Year</label>
+                                <md-icon class="name"><i class="material-icons">date_range</i></md-icon>
+                                <input ng-model="item.year" type="text" required>
+                            </md-input-container>
 
-                    <md-input-container class="md-icon-float md-block">
-                        <label>Owner's Lastname</label>
-                        <md-icon class="name"><i class="material-icons">person_pin</i></md-icon>
-                        <input ng-model="item.owner.lastName" type="text" required>
-                    </md-input-container>
+                            <md-input-container class="md-icon-float md-block">
+                                <label>Owner's Firstname</label>
+                                <md-icon class="name"><i class="material-icons">person_pin</i></md-icon>
+                                <input ng-model="item.owner.firstName" type="text" required>
+                            </md-input-container>
 
-                    <md-input-container class="md-icon-float md-block">
-                        <label>Owner's ID Type</label>
-                        <md-icon class="name"><i class="material-icons">credit_card</i></md-icon>
-                        <input ng-model="item.owner.idType" type="text" required>
-                    </md-input-container>
+                            <md-input-container class="md-icon-float md-block">
+                                <label>Owner's Lastname</label>
+                                <md-icon class="name"><i class="material-icons">person_pin</i></md-icon>
+                                <input ng-model="item.owner.lastName" type="text" required>
+                            </md-input-container>
 
-                    <md-input-container class="md-icon-float md-block">
-                        <label>Owner's ID No.</label>
-                        <md-icon class="name"><i class="material-icons">perm_identity</i></md-icon>
-                        <input ng-model="item.owner.idNo" type="text" required>
-                    </md-input-container>
+                            <md-input-container class="md-icon-float md-block">
+                                <label>Owner's ID Type</label>
+                                <md-icon class="name"><i class="material-icons">credit_card</i></md-icon>
+                                <input ng-model="item.owner.idType" type="text" required>
+                            </md-input-container>
 
-                    <md-input-container class="md-icon-float md-block">
-                        <label>Item Valuation</label>
-                        <md-icon class="name"><i class="material-icons">attach_money</i></md-icon>
-                        <input ng-model="item.valuation" type="number" required>
-                    </md-input-container>
+                            <md-input-container class="md-icon-float md-block">
+                                <label>Owner's ID No.</label>
+                                <md-icon class="name"><i class="material-icons">perm_identity</i></md-icon>
+                                <input ng-model="item.owner.idNo" type="text" required>
+                            </md-input-container>
 
-                     <md-input-container class="md-icon-float md-block">
-                        <label>Item Pawn Value</label>
-                        <md-icon class="name"><i class="material-icons">attach_money</i></md-icon>
-                        <input ng-model="item.pawnValue" type="number" readonly required>
-                    </md-input-container>
+                            <md-input-container class="md-icon-float md-block">
+                                <label>Item Valuation</label>
+                                <md-icon class="name"><i class="material-icons">attach_money</i></md-icon>
+                                <input ng-model="item.valuation" type="number" required>
+                            </md-input-container>
 
-                    <md-input-container class="md-icon-float md-block">
-                        <label>Item Notes</label>
-                        <md-icon class="name"><i class="material-icons">note_add</i></md-icon>
-                        <input ng-model="item.notes" type="text">
-                    </md-input-container>
+                            <md-input-container class="md-icon-float md-block">
+                                <label>Item Pawn Value</label>
+                                <md-icon class="name"><i class="material-icons">attach_money</i></md-icon>
+                                <input ng-model="item.pawnValue" type="number" readonly required>
+                            </md-input-container>
 
-
+                            <md-input-container class="md-icon-float md-block">
+                                <label>Item Notes</label>
+                                <md-icon class="name"><i class="material-icons">note_add</i></md-icon>
+                                <input ng-model="item.notes" type="text">
+                            </md-input-container>
 
 
 
-                </md-content>
-            </div>
-        </md-dialog-content>
 
-        <md-dialog-actions layout="row">
-            <md-button class="md-warn" target="_blank" ng-click="cancel()">
-                Close
-            </md-button>
-            <span flex></span>
-            <md-button type="submit">
-                Save Items
-            </md-button>
-        </md-dialog-actions>
-    </form>
-</md-dialog>
+
+                        </md-content>
+                    </div>
+                </md-dialog-content>
+
+                <md-dialog-actions layout="row">
+                    <md-button class="md-warn" target="_blank" ng-click="cancel()">
+                        Close
+                    </md-button>
+                    <span flex></span>
+                    <md-button type="submit">
+                        Save Items
+                    </md-button>
+                </md-dialog-actions>
+            </form>
+        </md-dialog>
     </div>
-  </div>
-
+</div>
