@@ -54,7 +54,7 @@ myApp.controller('viewItemsController',
             var timecreated = new moment(item.dateCreated);
             var daysOnHand = now.diff(timecreated,'days');
             console.log(daysOnHand);
-            var buyBackValue = item.pawnValue + (item.pawnValue * (storeConfig.defaultInterestPercentage/100) * Math.max(daysOnHand/storeConfig.expiryDate))
+            var buyBackValue = item.pawnValue + (item.pawnValue * (storeConfig.defaultInterestPercentage/100) * Math.ceil(daysOnHand/storeConfig.expiryDate))
             buyBackValue = Number((buyBackValue).toFixed(2))
 
             var confirm = $mdDialog.prompt()

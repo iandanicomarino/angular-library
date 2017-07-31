@@ -1,14 +1,19 @@
 [debug] ----------------------------------------------------------------------
-[debug] Command:      /usr/bin/nodejs /usr/bin/firebase serve
+[debug] Command:      /usr/bin/nodejs /usr/local/bin/firebase deploy --only hosting
 [debug] CLI Version:  3.2.1
 [debug] Platform:     linux
-[debug] Node Version: v6.9.2
-[debug] Time:         Wed Feb 22 2017 17:14:24 GMT+0800 (PHT)
+[debug] Node Version: v4.2.6
+[debug] Time:         Mon Jul 31 2017 15:37:35 GMT+0800 (PHT)
 [debug] ----------------------------------------------------------------------
 [debug] 
-[info] Starting Firebase development server...
+[debug] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase"]
+[debug] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/iandanicowebsite 
+[debug] <<< HTTP RESPONSE 200
+[debug] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/iandanicowebsite/tokens 
+[debug] <<< HTTP RESPONSE 200
 [info] 
-[info] Project Directory: /home/nekotopsi/programming/schoolproject/web/angular-library
-[info] Public Directory: /
+[info] === Deploying to 'iandanicowebsite'...
 [info] 
-[info] Server listening at: http://localhost:5000
+[info] i  deploying hosting
+[info] i  hosting: preparing / directory for upload...
+[debug] >>> HTTP REQUEST PUT https://deploy.firebase.com/v1/hosting/iandanicowebsite/uploads/-KqM_2nAvD1yGr-CGOEw?fileCount=29&message= 
