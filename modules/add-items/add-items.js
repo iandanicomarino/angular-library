@@ -3,6 +3,7 @@ myApp.controller('addItemsController',
 
     $scope.default = {};
     $scope.default.categories = ['Jewelry','Gadget','Property','Custom'] 
+    $scope.default.idTypes = ['AFP ID',"Driver's License",'GSIS ID','NBI Clearance','Passport','Postal ID','PRC ID',"School ID",'SSS ID',"Seaman's Book",'UMID','Voters ID',] 
     var appraisalPercentage = 0;
     var storeConfig = {};
     readService.config()

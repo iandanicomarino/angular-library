@@ -14,7 +14,6 @@ var myApp = angular.module('myApp',
   });
 })
 
-
 myApp.config(function ($stateProvider, $mdThemingProvider) {
   $mdThemingProvider.theme('default')
     .primaryPalette('green')
@@ -56,3 +55,43 @@ myApp.config(function ($stateProvider, $mdThemingProvider) {
   $stateProvider.state(loginState);
   $stateProvider.state(aboutState);
 });
+
+
+
+myApp.service('PrintPagesCtrl', function () {
+    var printpage = {
+        print: function (div) {
+            console.log(div)
+          	angular.element(document).ready(function () {	
+              var originalTitle = document.title;
+              printpage.printElement(document.getElementById(div));
+              window.print();
+            });
+        },
+        printElement : function (elem, append, delimiter) {
+					var domClone = elem.cloneNode(true);
+					var $printSection = document.getElementById("printSection");
+					if (!$printSection) {
+						var $printSection = document.createElement("div");
+						$printSection.id = "printSection";
+						document.body.appendChild($printSection);
+					}
+
+					if (append !== true) {
+						$printSection.innerHTML = "";
+					}
+
+					else if (append === true) {
+						if (typeof(delimiter) === "string") {
+							$printSection.innerHTML += delimiter;
+						}
+						else if (typeof(delimiter) === "object") {
+							$printSection.appendChlid(delimiter);
+						}
+					}
+
+					$printSection.appendChild(domClone);
+				}
+    }
+    return printpage;
+})

@@ -1,6 +1,16 @@
 body{
     font-family: 'Titillium Web', sans-serif;
 }
+.md-datepicker-button {
+  display: none;
+}
+.md-datepicker-input{
+  margin-left:20px !important;
+}
+
+._md-datepicker-floating-label._md-datepicker-has-calendar-icon>label:not(.md-no-float):not(.md-container-ignore){
+  right: 49px !important;
+}
 
 .md-icon-button{
     margin: auto;
@@ -45,4 +55,26 @@ body{
     transform: scale(1.0);
     -webkit-transform: scale(1.0);
   }
+}
+
+@media screen {
+    #printSection, #itemDetails {
+        display: none;
+    }
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #printSection,
+    #printSection * {
+        visibility: visible;
+    }
+    #printSection {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
 }

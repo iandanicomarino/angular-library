@@ -1,4 +1,4 @@
-myApp.service('writeService', function ($q, configService) {
+myApp.service('writeService', function ($http,$q, configService) {
     const db = firebase.database();
     var writeServiceFunctions = {
         addPawnee: function (data) {

@@ -37,6 +37,7 @@
                                         </md-card-title-media>
                                     </md-card-title>
                                     <md-card-actions layout="row" layout-align="end center">
+                                        <md-button class="md-primary md-raised md-hue-2" ng-click="print('itemDetails',item, key)">Print</md-button>
                                         <md-button class="md-primary md-raised md-hue-1" ng-click="viewItemDetails(item)">View Details</md-button>
                                         <md-button class="md-warn md-raised md-hue-1" ng-click="extendDate($event,item,key)">Extend Date</md-button>
                                         <md-button class="md-raised md-hue-1" ng-click="returnItem($event,item,key)">Return Items</md-button>
@@ -115,7 +116,7 @@
                                         </md-card-title-media>
                                     </md-card-title>
                                     <md-card-actions layout="row" layout-align="end center">
-                                        <md-button class="md-primary md-raised md-hue-1" ng-click="viewItemDetails(item)">View Details</md-button>
+                                        <md-button class="md-primary md-raised md-hue-1" ng-click="viewItemDetails(item,key)">View Details</md-button>
                                         <md-button class="md-warn md-raised md-hue-1" ng-click="sellItem($event,item,key)">Sell Item</md-button>
                                     </md-card-actions>
                                 </md-card>
@@ -183,100 +184,122 @@
                 </md-toolbar>
 
                 <md-dialog-content>
-                    <div class="md-dialog-content">
-                        <h2>Item Info</h2>
-                        <md-content class="md-no-momentum">
+            <div class="md-dialog-content">
+                <h2>Item Info</h2>
+                <md-content class="md-no-momentum">
 
-                            <md-input-container class="md-icon-float md-block">
-                                <label>Item Category</label>
-                                <md-icon class="name"><i class="material-icons">info</i></md-icon>
-                                <md-select ng-model="item.category" style="height: 40px;">
-                                    <md-option><em>None</em></md-option>
-                                    <md-option ng-repeat="value in default.categories" ng-value="value">
-                                        {{value}}
-                                    </md-option>
-                                </md-select>
-                            </md-input-container>
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Item Category</label>
+                        <md-icon class="name"><i class="material-icons">info</i></md-icon>
+                        <md-select ng-model="item.category" style="height: 40px;">
+                            <md-option><em>None</em></md-option>
+                            <md-option ng-repeat="value in default.categories" ng-value="value">
+                            {{value}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
 
-                            <md-input-container class="md-icon-float md-block">
-                                <label>Item Brand</label>
-                                <md-icon class="name"><i class="material-icons">local_offer</i></md-icon>
-                                <input ng-model="item.brand" type="text" required>
-                            </md-input-container>
+                     <md-input-container class="md-icon-float md-block">
+                        <label>Item Brand</label>
+                        <md-icon class="name"><i class="material-icons">local_offer</i></md-icon>
+                        <input ng-model="item.brand" type="text" required>
+                    </md-input-container>
+                    
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Item Model</label>
+                        <md-icon class="name"><i class="material-icons">layers</i></md-icon>
+                        <input ng-model="item.model" type="text" required>
+                    </md-input-container>
 
-                            <md-input-container class="md-icon-float md-block">
-                                <label>Item Model</label>
-                                <md-icon class="name"><i class="material-icons">layers</i></md-icon>
-                                <input ng-model="item.model" type="text" required>
-                            </md-input-container>
+                     <md-input-container class="md-icon-float md-block">
+                        <label>Item Serial</label>
+                        <md-icon class="name"><i class="material-icons">perm_device_information</i></md-icon>
+                        <input ng-model="item.serial" type="text" required>
+                    </md-input-container>
 
-                            <md-input-container class="md-icon-float md-block">
-                                <label>Item Serial</label>
-                                <md-icon class="name"><i class="material-icons">perm_device_information</i></md-icon>
-                                <input ng-model="item.serial" type="text" required>
-                            </md-input-container>
+                     <md-input-container class="md-icon-float md-block">
+                        <label>Item Color</label>
+                        <md-icon class="name"><i class="material-icons">invert_colors</i></md-icon>
+                        <input ng-model="item.color" type="text" required>
+                    </md-input-container>
 
-                            <md-input-container class="md-icon-float md-block">
-                                <label>Item Color</label>
-                                <md-icon class="name"><i class="material-icons">invert_colors</i></md-icon>
-                                <input ng-model="item.color" type="text" required>
-                            </md-input-container>
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Item Year</label>
+                        <md-icon class="name"><i class="material-icons">date_range</i></md-icon>
+                        <input ng-model="item.year" type="text" required>
+                    </md-input-container>
 
-                            <md-input-container class="md-icon-float md-block">
-                                <label>Item Year</label>
-                                <md-icon class="name"><i class="material-icons">date_range</i></md-icon>
-                                <input ng-model="item.year" type="text" required>
-                            </md-input-container>
+                      <md-input-container class="md-icon-float md-block">
+                        <label>Owner's Firstname</label>
+                        <md-icon class="name"><i class="material-icons">person_pin</i></md-icon>
+                        <input ng-model="item.owner.firstName" type="text" required>
+                    </md-input-container>
 
-                            <md-input-container class="md-icon-float md-block">
-                                <label>Owner's Firstname</label>
-                                <md-icon class="name"><i class="material-icons">person_pin</i></md-icon>
-                                <input ng-model="item.owner.firstName" type="text" required>
-                            </md-input-container>
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Owner's Lastname</label>
+                        <md-icon class="name"><i class="material-icons">person_pin</i></md-icon>
+                        <input ng-model="item.owner.lastName" type="text" required>
+                    </md-input-container>
 
-                            <md-input-container class="md-icon-float md-block">
-                                <label>Owner's Lastname</label>
-                                <md-icon class="name"><i class="material-icons">person_pin</i></md-icon>
-                                <input ng-model="item.owner.lastName" type="text" required>
-                            </md-input-container>
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Owner's Govt Id.</label>
+                        <md-icon class="name"><i class="material-icons">credit_card</i></md-icon>
+                        <md-select ng-model="item.idTypes" style="height: 40px;" required>
+                            <md-option ng-repeat="value in default.idTypes" ng-value="value">
+                            {{value}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
 
-                            <md-input-container class="md-icon-float md-block">
-                                <label>Owner's ID Type</label>
-                                <md-icon class="name"><i class="material-icons">credit_card</i></md-icon>
-                                <input ng-model="item.owner.idType" type="text" required>
-                            </md-input-container>
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Owner's ID No.</label>
+                        <md-icon class="name"><i class="material-icons">perm_identity</i></md-icon>
+                        <input ng-model="item.owner.idNo" type="text">
+                    </md-input-container>
 
-                            <md-input-container class="md-icon-float md-block">
-                                <label>Owner's ID No.</label>
-                                <md-icon class="name"><i class="material-icons">perm_identity</i></md-icon>
-                                <input ng-model="item.owner.idNo" type="text" required>
-                            </md-input-container>
+                    <md-input-container class="md-block">
+                        <label class="offset-datepicker">Owner's Date Of Birth</label>
+                        <md-icon class="name"><i class="material-icons">credit_card</i></md-icon>
+                        <md-datepicker ng-model="item.owner.dateOfBirth" md-current-view="year" required></md-datepicker>
+                    </md-input-container>
 
-                            <md-input-container class="md-icon-float md-block">
-                                <label>Item Valuation</label>
-                                <md-icon class="name"><i class="material-icons">attach_money</i></md-icon>
-                                <input ng-model="item.valuation" type="number" required>
-                            </md-input-container>
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Owner's Email</label>
+                        <md-icon class="name"><i class="material-icons">email</i></md-icon>
+                        <input ng-model="item.owner.email" type="text" required>
+                    </md-input-container>
 
-                            <md-input-container class="md-icon-float md-block">
-                                <label>Item Pawn Value</label>
-                                <md-icon class="name"><i class="material-icons">attach_money</i></md-icon>
-                                <input ng-model="item.pawnValue" type="number" readonly required>
-                            </md-input-container>
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Owner's Phone #</label>
+                        <md-icon class="name"><i class="material-icons">phone</i></md-icon>
+                        <input ng-model="item.owner.cellphoneNo" type="text" required>
+                    </md-input-container>
 
-                            <md-input-container class="md-icon-float md-block">
-                                <label>Item Notes</label>
-                                <md-icon class="name"><i class="material-icons">note_add</i></md-icon>
-                                <input ng-model="item.notes" type="text">
-                            </md-input-container>
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Item Valuation</label>
+                        <md-icon class="name"><i class="material-icons">attach_money</i></md-icon>
+                        <input ng-model="item.valuation" type="number" required>
+                    </md-input-container>
+
+                     <md-input-container class="md-icon-float md-block">
+                        <label>Item Pawn Value</label>
+                        <md-icon class="name"><i class="material-icons">attach_money</i></md-icon>
+                        <input ng-model="item.pawnValue" type="number" readonly required>
+                    </md-input-container>
+
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Item Notes</label>
+                        <md-icon class="name"><i class="material-icons">note_add</i></md-icon>
+                        <input ng-model="item.notes" type="text">
+                    </md-input-container>
 
 
 
 
 
-                        </md-content>
-                    </div>
-                </md-dialog-content>
+                </md-content>
+            </div>
+        </md-dialog-content>
 
                 <md-dialog-actions layout="row">
                     <md-button class="md-warn" target="_blank" ng-click="cancel()">
@@ -290,4 +313,66 @@
             </form>
         </md-dialog>
     </div>
+</div>
+
+<div id="itemDetails">
+    <table>
+        <tr>
+            <td align="center" colspan=2>
+                <h1>Pawnshoppe La Marino</h1>
+                <h3>Pawn Slip</h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Tracking ID:
+            </td>
+            <td>
+                {{selectedKey}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Item:
+            </td>
+            <td>{{selectedItem.year}} {{selectedItem.brand}} {{selectedItem.model}}</td>
+        </tr>
+        <tr>
+            <td>
+                Item Category:
+            </td>
+            <td>{{selectedItem.category}}</td>
+        </tr>
+         <tr>
+            <td>
+                Valuation/Pawn Value:
+            </td>
+            <td>PHP {{selectedItem.valuation}} / PHP {{selectedItem.pawnValue}}</td>
+        </tr>
+        <tr>
+            <td>
+                Pawn Date:
+            </td>
+            <td>{{selectedItem.dateCreated | date: 'medium'}}</td>
+        </tr>
+         <tr>
+            <td>
+                Expiry Date:
+            </td>
+            <td>{{selectedItem.expiryDate | date: 'medium'}}</td>
+        </tr>
+        <tr>
+            <td>
+                Contact's Name:
+            </td>
+            <td>
+                {{selectedItem.owner.firstName}} {{selectedItem.owner.lastName}}
+            </td>
+        </tr>
+        <tr>
+            <td>Signature:</td>
+            <td>_______________________</td>
+        </tr>
+    </table>
+    
 </div>

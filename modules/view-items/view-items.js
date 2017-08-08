@@ -1,5 +1,5 @@
 myApp.controller('viewItemsController',
-    function ($q, $scope, $rootScope, $timeout, $mdToast, $mdSidenav, $log, readService, $mdDialog, configService, writeService) {
+    function ($q, $scope, $rootScope, $timeout, $mdToast, $mdSidenav, $log, readService, $mdDialog, configService, writeService, PrintPagesCtrl) {
         // init();
 
         var db = firebase.database()
@@ -32,6 +32,13 @@ myApp.controller('viewItemsController',
                         })
                 })
         }
+
+       $scope.print = function (div, item, key){
+           $scope.selectedKey = key;
+           $scope.selectedItem = item;
+           console.log(div);
+           PrintPagesCtrl.print(div)
+       }
 
 
         $scope.search = function (query, which) {
@@ -72,6 +79,9 @@ myApp.controller('viewItemsController',
             var object = angular.copy(object);
             for (var key in object) {
                 var forreturn = false;
+                if (key.toLowerCase().includes(query)){
+                    forreturn = true;
+                }
                 for (var key2 in object[key]) {
                     if (typeof (object[key][key2]) == 'string') {
 
@@ -214,7 +224,7 @@ myApp.controller('viewItemsController',
                 daysOnHand++;
             }
             console.log(daysOnHand);
-            var buyBackValue = item.pawnValue + (item.pawnValue * (storeConfig.defaultInterestPercentage / 100) * Math.ceil(daysOnHand / storeConfig.expiryDate))
+            var buyBackValue = item.pawnValue + (item.pawnValue * (storeConfig.defaultInterestPercentage / 100) * Math.ceil(daysOnHand / storeConfig.maturityDate))
             buyBackValue = Number((buyBackValue).toFixed(2))
 
             var confirm = $mdDialog.prompt()
@@ -250,8 +260,18 @@ myApp.controller('viewItemsController',
         };
 
         $scope.extendDate = function (ev, item, key) {
+            var now = new moment();
+            var timecreated = new moment(item.dateCreated);
+            var daysOnHand = now.diff(timecreated, 'days');
+            if (daysOnHand == 0) {
+                daysOnHand++;
+            }
+            console.log(daysOnHand);
+            var loanRenewalValue =(item.pawnValue * (storeConfig.defaultInterestPercentage / 100) * Math.ceil(daysOnHand / storeConfig.maturityDate))
+            loanRenewalValue = Number((loanRenewalValue).toFixed(2))
+
             var confirm = $mdDialog.prompt()
-                .title('Extend Date')
+                .title('Loan Renewal, Cost is PHP '+loanRenewalValue)
                 .htmlContent("<p>Enter Amount.<p>")
                 .placeholder('0.00')
                 .ariaLabel('Amount')
@@ -262,7 +282,8 @@ myApp.controller('viewItemsController',
 
             $mdDialog.show(confirm).then(function (result) {
                 $scope.amount = parseFloat(result);
-                if (isNaN($scope.amount)) {
+                console.log(result);
+                if (isNaN($scope.amount) || $scope.amount < loanRenewalValue) {
                     var toast = $mdToast.simple()
                         .textContent('Amount not valid please input as 0.00')
                         .highlightAction(true)
@@ -270,12 +291,13 @@ myApp.controller('viewItemsController',
                         .position('bottom left right');
                     $mdToast.show(toast);
                     $scope.invalidAmount = true;
-                    $scope.showPrompt();
+                    $scope.extendDate(ev,item,key);
                 } else {
                     console.log(item)
-                    var newDate = new Date(moment(item.expiryDate).add(storeConfig.expiryDate, 'days'))
+                    var newDateCreated = new Date().toISOString();
+                    var newDate = new Date(moment(newDateCreated).add(storeConfig.expiryDate, 'days'))
                     item.expiryDate = newDate.toISOString();
-                    console.log(item.expiryDate)
+                    item.dateCreated = newDateCreated;
                     writeService.editItem(item, key)
                         .then(function (data) {
                             var toast = $mdToast.simple()
@@ -303,6 +325,7 @@ myApp.controller('viewItemsController',
         function viewItemDetails($scope, $mdDialog, item) {
             $scope.default = {};
             $scope.default.categories = ['Jewelry', 'Gadget', 'Property', 'Custom']
+            $scope.default.idTypes = ['AFP ID',"Driver's License",'GSIS ID','NBI Clearance','Passport','Postal ID','PRC ID',"School ID",'SSS ID',"Seaman's Book",'UMID','Voters ID',] 
             $scope.item = item;
             console.log(item)
 
