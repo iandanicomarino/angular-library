@@ -1,6 +1,16 @@
 myApp.service('writeService', function ($http,$q, configService) {
     const db = firebase.database();
     var writeServiceFunctions = {
+        sendSMS: function(){
+            $http.get('http://angular-pawnshop.herokuapp.com/').then(function(success){
+                console.log(success);
+            }, function(error){
+                console.log(error);
+            });
+        },
+        //http://localhost:1111/sendSMS?cellphone=639175471139&item=ipod%20classic&name=Ajahm%20Ganda
+        //http://localhost:1111/sendEmail?email=nekomarino@gmail.com&item=ipod%20classic&name=Ajahm%20Ganda
+
         addPawnee: function (data) {
             return $q(function (resolve, reject) {
                 var ref = db.ref('pawnees')

@@ -7,7 +7,7 @@ myApp.controller('viewItemsController',
         var original = {};
 
         init();
-
+        writeService.sendSMS();
         function init() {
             $scope.loading = true;
             readService.config()
