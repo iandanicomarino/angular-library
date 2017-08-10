@@ -1,7 +1,13 @@
 myApp.controller('loginController', 
-function($scope, $q, $state, writeService){
+function($scope, $q, $state, writeService,readService){
     
     $scope.user = {};
+
+    readService.config()
+    .then(function(data){
+      console.log(data);
+      $scope.config = data;
+    })
 
     $scope.login= function(user){
         firebase.auth().signInWithEmailAndPassword(user.email, user.password)
