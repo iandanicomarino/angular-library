@@ -7,7 +7,6 @@ myApp.controller('viewItemsController',
         var original = {};
 
         init();
-        writeService.sendSMS();
         function init() {
             $scope.loading = true;
             readService.config()
@@ -111,10 +110,16 @@ myApp.controller('viewItemsController',
 
         function transferToSellable(items) {
             var forTransfer = [];
+            var forEmailandSMS = [];
 
             for (var key in items) {
                 var expiryDate = new Date(items[key].expiryDate);
                 var dateNow = new Date()
+                var dateToday = new moment();
+                var expiry = new moment(items[key].expiryDate);
+
+                var datediff = expiry.diff(dateToday,'days');
+                console.log(datediff)
                 var dataForTranfer = {};
                 if (expiryDate < dateNow) {
                     dataForTranfer.key = key;
@@ -122,19 +127,45 @@ myApp.controller('viewItemsController',
                     forTransfer.push(dataForTranfer);
                     console.log('delete' + items + key)
                     delete items[key];
+                }else if(datediff == 2 && items[key].sentANotification == false){
+                    items[key].sentANotification = true;
+                    dataForTranfer.key = key;
+                    dataForTranfer.data = items[key]
+                    forEmailandSMS.push(dataForTranfer);   
                 }
             }
 
-            var promises = [];
 
+
+            var promises = [];
             forTransfer.forEach(function (data) {
                 promises.push(writeService.transferToSellable(data.data, data.key))
             })
 
+
+            var promises2 = [];
+            forEmailandSMS.forEach(function(data){
+                promises2.push(writeService.sendNotification(data.data, data.key))
+            })
+
+
+
             $q.all(promises)
-                .then(function (resolved) {
+                .then(function (promises) {
                     var toast = $mdToast.simple()
-                        .textContent('Transferred ' + resolved.length + ' items to sellable')
+                        .textContent('Transferred ' + promises.length + ' items to sellable')
+                        .highlightAction(true)
+                        .highlightClass('md-accent')
+                        .position('bottom left right');
+
+                    $mdToast.show(toast);
+                })
+
+             $q.all(promises2)
+                .then(function (promises2) {
+                    console.log('done2')
+                    var toast = $mdToast.simple()
+                        .textContent('Sent ' + promises2.length + ' notifications via email & sms')
                         .highlightAction(true)
                         .highlightClass('md-accent')
                         .position('bottom left right');

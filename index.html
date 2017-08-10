@@ -34,10 +34,14 @@
     <script src="/modules/view-items/view-items.js"></script>
     <script src="/modules/view-items/view-items-details/view-details.js"></script>
     <script src="/modules/view-config/view-config.js"></script>
+    <script src="/modules/main-content/main.js"></script>
   <!--End of Written Scripts-->
   </head>
-  <body ng-app="myApp" ng-cloak>
-      <md-toolbar  ng-include="'modules/sidenav-topnav/topbar.html'" ng-controller="topBarController"></md-toolbar >
+  <body ng-app="myApp"  md-theme="{{theme}}" md-theme-watch="true" ng-cloak>
+    <div ng-controller="themeManager" md-theme="{{theme}}" md-theme-watch="true" >
+       <md-toolbar  ng-include="'modules/sidenav-topnav/topbar.html'" ng-controller="topBarController"></md-toolbar >
       <div id="content"  layout="column" ui-view flex> </div>
+    </div>
+     
   </body>
 </html>

@@ -23,6 +23,7 @@ myApp.controller('addItemsController',
 
     $scope.addItems = function (item) {
         item.expiryDate = new moment().add(storeConfig.expiryDate,'days').toISOString();
+        item.sentANotification = false;
         writeService.addItem(item)
         .then(function(data){
             configService.showToast('Added an item to the inventory')

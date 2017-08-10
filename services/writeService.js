@@ -1,16 +1,46 @@
-myApp.service('writeService', function ($http,$q, configService) {
+myApp.service('writeService', function ($http, $q, configService) {
     const db = firebase.database();
     var writeServiceFunctions = {
-        sendSMS: function(){
-            $http.get('http://angular-pawnshop.herokuapp.com/').then(function(success){
-                console.log(success);
-            }, function(error){
-                console.log(error);
+        sendNotification: function (data, key) {
+            var cellphone = data.owner.cellphoneNo;
+            var email = data.owner.email;
+            var item = data.year + ' '+data.brand + ' '+data.model;
+            var name = data.owner.firstName +' '+ data.owner.lastName;
+
+            return $q(function (resolve, reject) {
+                writeServiceFunctions.sendSMS(cellphone, item, name)
+                    .then(function (res) {
+                        return writeServiceFunctions.sendEmail(email, item, name)
+                    }).then(function(res){
+                        writeServiceFunctions.editItem(data,key)
+                        .then(function(res){
+                            resolve('FINISHED SENDING EMAIL AND SMS AND UPDATED ITEM')
+                        })
+                    })
+            })
+        },
+        sendSMS: function (cellphone, item, name) {
+            return $q(function (resolve, reject) {
+                var query = "?cellphone=" + cellphone + "&item=" + item + "&name=" + name;
+                $http.get('http://angular-pawnshop.herokuapp.com/sendSMS' + query).then(function (success) {
+                    console.log(success);
+                    resolve("sucess sending sms->", cellphone)
+                }, function (error) {
+                    resolve("fail sending sms->", cellphone)
+                });
             });
         },
-        //http://localhost:1111/sendSMS?cellphone=639175471139&item=ipod%20classic&name=Ajahm%20Ganda
-        //http://localhost:1111/sendEmail?email=nekomarino@gmail.com&item=ipod%20classic&name=Ajahm%20Ganda
-
+        sendEmail: function (email, item, name) {
+            return $q(function (resolve, reject) {
+                var query = "?email=" + email + "&item=" + item + "&name=" + name;
+                $http.get('http://angular-pawnshop.herokuapp.com/sendEmail' + query).then(function (success) {
+                    console.log(success);
+                    resolve("sucess sending email->", email)
+                }, function (error) {
+                    resolve("fail sending email->", email)
+                });
+            });
+        },
         addPawnee: function (data) {
             return $q(function (resolve, reject) {
                 var ref = db.ref('pawnees')

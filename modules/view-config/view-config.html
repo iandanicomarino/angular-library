@@ -45,6 +45,17 @@
                         <input ng-model="config.serviceFee" type="number">
                     </md-input-container>
 
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Theme Primary (PHP)</label>
+                        <md-icon class="name"><i class="material-icons">toll</i></md-icon>
+                        <md-select ng-model="config.primary" style="height: 40px;">
+                            <md-option><em>None</em></md-option>
+                            <md-option ng-repeat="value in default.colors" ng-value="value">
+                            {{value}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
                 </md-content>
             </div>
         </md-dialog-content>

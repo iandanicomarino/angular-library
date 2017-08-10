@@ -15,9 +15,33 @@ var myApp = angular.module('myApp',
 })
 
 myApp.config(function ($stateProvider, $mdThemingProvider) {
-  $mdThemingProvider.theme('default')
-    .primaryPalette('green')
-    .accentPalette('blue');
+  $mdThemingProvider.alwaysWatchTheme(true);
+  
+  //  $mdThemingProvider.theme('default')
+  //   .primaryPalette('orange')
+  //   .accentPalette('orange');
+
+  $mdThemingProvider.theme('blue')
+  .primaryPalette('blue')
+  .accentPalette('orange');
+  
+  $mdThemingProvider.theme('red')
+  .primaryPalette('red')
+  .accentPalette('orange');
+
+  $mdThemingProvider.theme('yellow')
+  .primaryPalette('blue')
+  .accentPalette('orange');
+
+   $mdThemingProvider.theme('orange')
+  .primaryPalette('orange')
+  .accentPalette('orange');
+
+  $mdThemingProvider.theme('green')
+  .primaryPalette('green')
+  .accentPalette('light-green');
+
+ 
 
   var loginState = {
     name: 'login',
@@ -33,7 +57,8 @@ myApp.config(function ($stateProvider, $mdThemingProvider) {
   var main = {
     name: 'main',
     url: '/main',
-    templateUrl: '/modules/maincontent/main.html'
+    templateUrl: '/modules/maincontent/main.html',
+    controller: 'mainController'
   }
 
   var pawnees = {
@@ -55,6 +80,21 @@ myApp.config(function ($stateProvider, $mdThemingProvider) {
   $stateProvider.state(loginState);
   $stateProvider.state(aboutState);
 });
+
+myApp.controller('themeManager', function($rootScope,$scope, readService){
+
+readService.config()
+  .then(function(data){
+    console.log(data);
+    $scope.config = data;
+      $rootScope.$broadcast('theme-change', $scope.config.primary);
+  })
+
+$scope.$on('theme-change', function(event, args) {
+    $scope.theme = args || 'default';
+});
+
+})
 
 
 
