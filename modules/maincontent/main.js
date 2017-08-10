@@ -1,5 +1,5 @@
 myApp.controller('mainController',
-  function ($q,$scope, $timeout, $mdSidenav, $log, writeService, $mdDialog, configService, readService) {
+  function ($rootScope,$q,$scope, $timeout, $mdSidenav, $log, writeService, $mdDialog, configService, readService) {
 
     readService.config()
     .then(function(data){

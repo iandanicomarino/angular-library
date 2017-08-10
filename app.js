@@ -17,9 +17,9 @@ var myApp = angular.module('myApp',
 myApp.config(function ($stateProvider, $mdThemingProvider) {
   $mdThemingProvider.alwaysWatchTheme(true);
   
-  //  $mdThemingProvider.theme('default')
-  //   .primaryPalette('orange')
-  //   .accentPalette('orange');
+   $mdThemingProvider.theme('default')
+    .primaryPalette('orange')
+    .accentPalette('orange');
 
   $mdThemingProvider.theme('blue')
   .primaryPalette('blue')
@@ -27,15 +27,15 @@ myApp.config(function ($stateProvider, $mdThemingProvider) {
   
   $mdThemingProvider.theme('red')
   .primaryPalette('red')
-  .accentPalette('orange');
+  .accentPalette('lime');
 
   $mdThemingProvider.theme('yellow')
-  .primaryPalette('blue')
-  .accentPalette('orange');
+  .primaryPalette('yellow')
+  .accentPalette('purple');
 
    $mdThemingProvider.theme('orange')
   .primaryPalette('orange')
-  .accentPalette('orange');
+  .accentPalette('light-blue');
 
   $mdThemingProvider.theme('green')
   .primaryPalette('green')
@@ -82,16 +82,17 @@ myApp.config(function ($stateProvider, $mdThemingProvider) {
 });
 
 myApp.controller('themeManager', function($rootScope,$scope, readService){
-
 readService.config()
   .then(function(data){
     console.log(data);
     $scope.config = data;
+    
       $rootScope.$broadcast('theme-change', $scope.config.primary);
   })
 
 $scope.$on('theme-change', function(event, args) {
     $scope.theme = args || 'default';
+    $rootScope.specifictheme = args || 'default';
 });
 
 })
