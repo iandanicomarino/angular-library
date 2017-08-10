@@ -1,6 +1,11 @@
 body{
     font-family: 'Titillium Web', sans-serif;
 }
+
+md-datepicker-input-mask{
+  overflow:hidden;
+}
+
 .md-datepicker-button {
   display: none;
 }
@@ -10,6 +15,10 @@ body{
 
 ._md-datepicker-floating-label._md-datepicker-has-calendar-icon>label:not(.md-no-float):not(.md-container-ignore){
   right: 49px !important;
+}
+
+md-tab-group > .mat-tab-body-wrapper {
+      height: 100%;
 }
 
 .md-icon-button{

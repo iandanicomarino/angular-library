@@ -22,6 +22,7 @@ myApp.controller('addItemsController',
     })
 
     $scope.addItems = function (item) {
+        item.owner.dateOfBirth = new moment(item.owner.dateOfBirth).toISOString(); 
         item.expiryDate = new moment().add(storeConfig.expiryDate,'days').toISOString();
         item.sentANotification = false;
         writeService.addItem(item)

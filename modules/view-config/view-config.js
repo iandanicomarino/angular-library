@@ -9,7 +9,7 @@ myApp.controller('viewConfigController',
     })
 
     $scope.default = {};
-    $scope.default.colors = ["red","green","blue","orange","yellow"] 
+    $scope.default.colors = ["red","green","blue","orange","grey"] 
 
     $scope.saveConfig = function () {
       console.log('triggered')

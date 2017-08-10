@@ -15,6 +15,7 @@ myApp.service('writeService', function ($http, $q, configService) {
                         writeServiceFunctions.editItem(data,key)
                         .then(function(res){
                             resolve('FINISHED SENDING EMAIL AND SMS AND UPDATED ITEM')
+                            writeServiceFunctions.updateReports('sent_notification')
                         })
                     })
             })
@@ -64,8 +65,7 @@ myApp.service('writeService', function ($http, $q, configService) {
                 ref.push(data)
                     .then(function (key) {
                         resolve(key)
-                        console.log(key)
-                        console.log(key.key)
+                        writeServiceFunctions.updateReports('pawned')
                     }, function (error) {
                         console.log(error)
                         reject(error)
@@ -98,8 +98,7 @@ myApp.service('writeService', function ($http, $q, configService) {
                         ref.set(data)
                             .then(function (key) {
                                 resolve(key)
-                                console.log(key)
-                                console.log(key.key)
+                                writeServiceFunctions.updateReports('transferred_to_sellable')
                             }, function (error) {
                                 console.log(error)
                                 reject(error)
@@ -120,6 +119,7 @@ myApp.service('writeService', function ($http, $q, configService) {
                             .then(function (key) {
                                 resolve(key)
                                 console.log(key)
+                                writeServiceFunctions.updateReports('returned')
                             }, function (error) {
                                 console.log(error)
                                 reject(error)
@@ -139,7 +139,7 @@ myApp.service('writeService', function ($http, $q, configService) {
                         ref.set(data)
                             .then(function (key) {
                                 resolve(key)
-                                console.log(key)
+                                writeServiceFunctions.updateReports('sold')
                             }, function (error) {
                                 console.log(error)
                                 reject(error)
@@ -159,6 +159,28 @@ myApp.service('writeService', function ($http, $q, configService) {
                     })
             })
         },
+        updateReports: function(incrementTo){
+            var datenow = moment();
+            var year    =   ''+datenow.year();
+            var month   =   ''+(datenow.month()+1); 
+            var date    =   ''+datenow.date();
+
+            var ref = db.ref('reports/'+year+'/'+month+'/'+date+'/'+incrementTo)
+
+            ref.transaction(function(value){
+                console.log('logged>>', value);
+                if(value != ''&& value != undefined && value != null ){
+                    console.log('imhere');
+                    value = value+1;  
+                   return value;
+                }else{
+                    return 1;
+                }
+            })
+
+
+            console.log(year,month,date)
+        }
 
     }
     return writeServiceFunctions;

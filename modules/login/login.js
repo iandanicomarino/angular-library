@@ -1,5 +1,5 @@
 myApp.controller('loginController', 
-function($scope, $q, $state){
+function($scope, $q, $state, writeService){
     
     $scope.user = {};
 
@@ -7,7 +7,8 @@ function($scope, $q, $state){
         firebase.auth().signInWithEmailAndPassword(user.email, user.password)
         .then(function(user){
             console.log(user);
-            $state.go('main')
+            writeService.updateReports('login');
+            $state.go('main');
         }).catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;

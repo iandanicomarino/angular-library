@@ -6,6 +6,7 @@ myApp.controller('viewItemsController',
         var storeConfig = {}
         var original = {};
 
+
         init();
         function init() {
             $scope.loading = true;
@@ -32,12 +33,13 @@ myApp.controller('viewItemsController',
                 })
         }
 
-       $scope.print = function (div, item, key){
-           $scope.selectedKey = key;
-           $scope.selectedItem = item;
-           console.log(div);
-           PrintPagesCtrl.print(div)
-       }
+        $scope.print = function (div, item, key) {
+            $scope.dateGenerated = new Date();
+            $scope.selectedKey = key;
+            $scope.selectedItem = item;
+            console.log(div);
+            PrintPagesCtrl.print(div)
+        }
 
 
         $scope.search = function (query, which) {
@@ -63,7 +65,7 @@ myApp.controller('viewItemsController',
                         $scope.sellableItems = searchQuery(original.sellableItems, query);
                     }
                     break;
-                 case "soldItems":
+                case "soldItems":
                     if (query == '' || query == undefined) {
                         $scope.soldItems = original.soldItems;
                     } else {
@@ -78,7 +80,7 @@ myApp.controller('viewItemsController',
             var object = angular.copy(object);
             for (var key in object) {
                 var forreturn = false;
-                if (key.toLowerCase().includes(query)){
+                if (key.toLowerCase().includes(query)) {
                     forreturn = true;
                 }
                 for (var key2 in object[key]) {
@@ -118,7 +120,7 @@ myApp.controller('viewItemsController',
                 var dateToday = new moment();
                 var expiry = new moment(items[key].expiryDate);
 
-                var datediff = expiry.diff(dateToday,'days');
+                var datediff = expiry.diff(dateToday, 'days');
                 console.log(datediff)
                 var dataForTranfer = {};
                 if (expiryDate < dateNow) {
@@ -127,11 +129,11 @@ myApp.controller('viewItemsController',
                     forTransfer.push(dataForTranfer);
                     console.log('delete' + items + key)
                     delete items[key];
-                }else if(datediff == 2 && items[key].sentANotification == false){
+                } else if (datediff == 2 && items[key].sentANotification == false) {
                     items[key].sentANotification = true;
                     dataForTranfer.key = key;
                     dataForTranfer.data = items[key]
-                    forEmailandSMS.push(dataForTranfer);   
+                    forEmailandSMS.push(dataForTranfer);
                 }
             }
 
@@ -144,7 +146,7 @@ myApp.controller('viewItemsController',
 
 
             var promises2 = [];
-            forEmailandSMS.forEach(function(data){
+            forEmailandSMS.forEach(function (data) {
                 promises2.push(writeService.sendNotification(data.data, data.key))
             })
 
@@ -161,7 +163,7 @@ myApp.controller('viewItemsController',
                     $mdToast.show(toast);
                 })
 
-             $q.all(promises2)
+            $q.all(promises2)
                 .then(function (promises2) {
                     console.log('done2')
                     var toast = $mdToast.simple()
@@ -187,6 +189,7 @@ myApp.controller('viewItemsController',
         $scope.default.categories = ['Jewelry', 'Gadget', 'Property', 'Custom']
 
         $scope.viewItemDetails = function (item) {
+            item.owner.dateOfBirth = new moment(item.owner.dateOfBirth);
             $mdDialog.show({
                 controller: viewItemDetails,
                 templateUrl: '/modules/view-items/view-items-details/view-details.html',
@@ -256,7 +259,7 @@ myApp.controller('viewItemsController',
             }
             console.log(daysOnHand);
             var buyBackValue = item.pawnValue + (item.pawnValue * (storeConfig.defaultInterestPercentage / 100) * Math.ceil(daysOnHand / storeConfig.maturityDate))
-            buyBackValue = Number((buyBackValue).toFixed(2))
+            buyBackValue = Number((buyBackValue).toFixed(2))+storeConfig.serviceFee;
 
             var confirm = $mdDialog.prompt()
                 .title('Does the owner want to get the item back? Buyback Value is PHP' + buyBackValue)
@@ -298,11 +301,11 @@ myApp.controller('viewItemsController',
                 daysOnHand++;
             }
             console.log(daysOnHand);
-            var loanRenewalValue =(item.pawnValue * (storeConfig.defaultInterestPercentage / 100) * Math.ceil(daysOnHand / storeConfig.maturityDate))
-            loanRenewalValue = Number((loanRenewalValue).toFixed(2))
+            var loanRenewalValue = (item.pawnValue * (storeConfig.defaultInterestPercentage / 100) * Math.ceil(daysOnHand / storeConfig.maturityDate))
+            loanRenewalValue = Number((loanRenewalValue).toFixed(2))+storeConfig.serviceFee;
 
             var confirm = $mdDialog.prompt()
-                .title('Loan Renewal, Cost is PHP '+loanRenewalValue)
+                .title('Loan Renewal, Cost is PHP ' + loanRenewalValue)
                 .htmlContent("<p>Enter Amount.<p>")
                 .placeholder('0.00')
                 .ariaLabel('Amount')
@@ -322,7 +325,7 @@ myApp.controller('viewItemsController',
                         .position('bottom left right');
                     $mdToast.show(toast);
                     $scope.invalidAmount = true;
-                    $scope.extendDate(ev,item,key);
+                    $scope.extendDate(ev, item, key);
                 } else {
                     console.log(item)
                     var newDateCreated = new Date().toISOString();
@@ -331,6 +334,7 @@ myApp.controller('viewItemsController',
                     item.dateCreated = newDateCreated;
                     writeService.editItem(item, key)
                         .then(function (data) {
+                            writeService.updateReports('extend_loan')
                             var toast = $mdToast.simple()
                                 .textContent('Item expiry extended')
                                 .highlightAction(true)
@@ -356,7 +360,7 @@ myApp.controller('viewItemsController',
         function viewItemDetails($scope, $mdDialog, item) {
             $scope.default = {};
             $scope.default.categories = ['Jewelry', 'Gadget', 'Property', 'Custom']
-            $scope.default.idTypes = ['AFP ID',"Driver's License",'GSIS ID','NBI Clearance','Passport','Postal ID','PRC ID',"School ID",'SSS ID',"Seaman's Book",'UMID','Voters ID',] 
+            $scope.default.idTypes = ['AFP ID', "Driver's License", 'GSIS ID', 'NBI Clearance', 'Passport', 'Postal ID', 'PRC ID', "School ID", 'SSS ID', "Seaman's Book", 'UMID', 'Voters ID',]
             $scope.item = item;
             console.log(item)
 
