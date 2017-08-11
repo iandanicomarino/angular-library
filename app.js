@@ -3,7 +3,8 @@ var myApp = angular.module('myApp',
     'ngMaterial',
     'ui.router',
     'firebase',
-    'ngSanitize'
+    'ngSanitize',
+    
   ]
 ).run(function ($rootScope, $state, configService) {
   firebase.initializeApp(configService.config());

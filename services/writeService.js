@@ -165,12 +165,28 @@ myApp.service('writeService', function ($http, $q, configService) {
             var month   =   ''+(datenow.month()+1); 
             var date    =   ''+datenow.date();
 
-            var ref = db.ref('reports/'+year+'/'+month+'/'+date+'/'+incrementTo)
+            var yearly = db.ref('reports/yearly/'+year+'/'+incrementTo)
+            var monthly = db.ref('reports/monthly/'+year+'/'+month+'/'+incrementTo);
+            var daily = db.ref('reports/daily/'+year+'/'+month+'/'+date+'/'+incrementTo);
 
-            ref.transaction(function(value){
-                console.log('logged>>', value);
+            yearly.transaction(function(value){
                 if(value != ''&& value != undefined && value != null ){
-                    console.log('imhere');
+                    value = value+1;  
+                   return value;
+                }else{
+                    return 1;
+                }
+            })
+            monthly.transaction(function(value){
+                if(value != ''&& value != undefined && value != null ){
+                    value = value+1;  
+                   return value;
+                }else{
+                    return 1;
+                }
+            })
+            daily.transaction(function(value){
+                if(value != ''&& value != undefined && value != null ){
                     value = value+1;  
                    return value;
                 }else{

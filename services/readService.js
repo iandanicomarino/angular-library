@@ -1,68 +1,79 @@
-myApp.service('readService', function($q,configService){
+myApp.service('readService', function ($q, configService) {
     const db = firebase.database();
     var readServiceFunctions = {
-        config : function (){
-            return $q(function(resolve, reject){
+        config: function () {
+            return $q(function (resolve, reject) {
                 var ref = db.ref('config');
                 ref.once('value')
-                .then(function(data){
-                    resolve(data.val());
-                })
+                    .then(function (data) {
+                        resolve(data.val());
+                    })
             })
         },
-        pawnees : function(user){
-            return $q(function(resolve,reject){
+        pawnees: function (user) {
+            return $q(function (resolve, reject) {
                 var ref = db.ref('pawnees')
                 ref.once('value')
-                .then(function(snapshot){
-                    resolve(snapshot.val());
-                },function(error){
-                    reject(error)
-                })
+                    .then(function (snapshot) {
+                        resolve(snapshot.val());
+                    }, function (error) {
+                        reject(error)
+                    })
             })
         },
-        items : function(user){
-            return $q(function(resolve,reject){
+        items: function (user) {
+            return $q(function (resolve, reject) {
                 var ref = db.ref('items')
                 ref.once('value')
-                .then(function(snapshot){
-                    resolve(snapshot.val());
-                },function(error){
-                    reject(error)
-                })
+                    .then(function (snapshot) {
+                        resolve(snapshot.val());
+                    }, function (error) {
+                        reject(error)
+                    })
             })
         },
-        returnedItems : function(user){
-            return $q(function(resolve,reject){
+        returnedItems: function (user) {
+            return $q(function (resolve, reject) {
                 var ref = db.ref('returned-items')
                 ref.once('value')
-                .then(function(snapshot){
-                    resolve(snapshot.val());
-                },function(error){
-                    reject(error)
-                })
+                    .then(function (snapshot) {
+                        resolve(snapshot.val());
+                    }, function (error) {
+                        reject(error)
+                    })
             })
         },
-        sellableItems : function(user){
-            return $q(function(resolve,reject){
+        sellableItems: function (user) {
+            return $q(function (resolve, reject) {
                 var ref = db.ref('sellable-items')
                 ref.once('value')
-                .then(function(snapshot){
-                    resolve(snapshot.val());
-                },function(error){
-                    reject(error)
-                })
+                    .then(function (snapshot) {
+                        resolve(snapshot.val());
+                    }, function (error) {
+                        reject(error)
+                    })
             })
         },
-         soldItems : function(user){
-            return $q(function(resolve,reject){
+        soldItems: function (user) {
+            return $q(function (resolve, reject) {
                 var ref = db.ref('sold-items')
                 ref.once('value')
-                .then(function(snapshot){
-                    resolve(snapshot.val());
-                },function(error){
-                    reject(error)
-                })
+                    .then(function (snapshot) {
+                        resolve(snapshot.val());
+                    }, function (error) {
+                        reject(error)
+                    })
+            })
+        },
+        reports: function () {
+            return $q(function (resolve, reject) {
+                var ref = db.ref('reports')
+                ref.once('value')
+                    .then(function (snapshot) {
+                        resolve(snapshot.val());
+                    }, function (error) {
+                        reject(error)
+                    })
             })
         }
     }
