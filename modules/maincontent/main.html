@@ -14,10 +14,19 @@
             <p>"We got you covered."</p>
           </md-card-content>
         </md-card>
-        <canvas id="myChart" style="width:60%; height:auto;"></canvas>
-        <div flex></div>
+        
 
-
+        
 
     </md-content>
+    <md-select ng-model="filterBy" style="height: 40px;">
+        <md-option><em>None</em></md-option>
+        <md-option ng-repeat="value in ['monthly','daily','yearly']" ng-value="value">
+        {{value}}
+        </md-option>
+    </md-select>
+    <div  flex=80>
+          <canvas id="myChart"></canvas>
+      </div>
+        
 </section>

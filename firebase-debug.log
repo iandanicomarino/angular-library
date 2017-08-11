@@ -1,0 +1,15 @@
+[debug] [2017-08-11T15:41:23.675Z] ----------------------------------------------------------------------
+[debug] [2017-08-11T15:41:23.677Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only hosting
+[debug] [2017-08-11T15:41:23.678Z] CLI Version:   3.9.2
+[debug] [2017-08-11T15:41:23.678Z] Platform:      linux
+[debug] [2017-08-11T15:41:23.678Z] Node Version:  v8.1.4
+[debug] [2017-08-11T15:41:23.678Z] Time:          Fri Aug 11 2017 23:41:23 GMT+0800 (PHT)
+[debug] [2017-08-11T15:41:23.678Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-08-11T15:41:23.692Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-08-11T15:41:23.692Z] > authorizing via signed-in user
+[debug] [2017-08-11T15:41:23.694Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/iandanicowebsite  
+ Fri Aug 11 2017 23:41:23 GMT+0800 (PHT)
+[debug] [2017-08-11T15:41:25.462Z] <<< HTTP RESPONSE 200
+[debug] [2017-08-11T15:41:25.463Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/iandanicowebsite/tokens  
+ Fri Aug 11 2017 23:41:25 GMT+0800 (PHT)

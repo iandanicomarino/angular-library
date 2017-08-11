@@ -19,7 +19,6 @@
                         <label>Item Category</label>
                         <md-icon class="name"><i class="material-icons">info</i></md-icon>
                         <md-select ng-model="item.category" style="height: 40px;">
-                            <md-option><em>None</em></md-option>
                             <md-option ng-repeat="value in default.categories" ng-value="value">
                             {{value}}
                             </md-option>

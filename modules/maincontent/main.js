@@ -1,46 +1,52 @@
 myApp.controller('mainController',
   function ($rootScope, $q, $scope, $timeout, $mdSidenav, $log, writeService, $mdDialog, configService, readService, writeService) {
 
-    $scope.filterBy = 'daily';
+    $scope.filterBy = 'yearly';
 
 
     readService.reports().then(
       function (data) {
         $scope.originalreports = data;
         console.log(data);
-        composeData($scope.originalreports, $scope.filterBy);
 
+        composeData($scope.originalreports, $scope.filterBy);
         initializeChart();
       })
 
+     $scope.$watch('filterBy', function(newValue, oldValue) {
+        console.log('triggered')
+        composeData($scope.originalreports, $scope.filterBy);
+        initializeChart();
+      });
 
-      function initializeChart(){
-        var ctx = document.getElementById("myChart").getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: $scope.labels,
-                datasets: $scope.data,
-                backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-                ],
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        }
-                    }]
-                }
-            }
-        });
-      }
+
+    function initializeChart() {
+      var ctx = document.getElementById("myChart").getContext('2d');
+      var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: $scope.labels,
+          datasets: $scope.data,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      });
+    }
 
 
     function composeData(data, filterBy) {
@@ -78,45 +84,91 @@ myApp.controller('mainController',
           backgroundColor: "yellow",
           data: []
         },
-        
+
 
       ]
 
 
       if (filterBy == 'daily') {
-        for (year in data) {
+        for (year in data.daily) {
           console.log(year)
-          for (month in data[year]) {
-            console.log(month)
-            for (day in data[year][month]) {
-              console.log(day)
-              for (labels in data[year][month][day]) {
+          for (month in data.daily[year]) {
+            var prepend = month;
+            for (day in data.daily[year][month]) {
+              for (labels in data.daily[year][month][day]) {
                 switch (labels) {
                   case 'extend_loan':
-                    datasets[0].data.push(data[year][month][day][labels])
+                    datasets[0].data.push(data.daily[year][month][day][labels])
                     break;
                   case 'pawned':
-                    datasets[1].data.push(data[year][month][day][labels])
+                    datasets[1].data.push(data.daily[year][month][day][labels])
                     break;
                   case 'returned':
-                    datasets[2].data.push(data[year][month][day][labels])
+                    datasets[2].data.push(data.daily[year][month][day][labels])
                     break;
                   case 'transferred_to_sellable':
-                    datasets[3].data.push(data[year][month][day][labels])
+                    datasets[3].data.push(data.daily[year][month][day][labels])
                     break;
                   case 'sold':
-                    datasets[4].data.push(data[year][month][day][labels])
+                    datasets[4].data.push(data.daily[year][month][day][labels])
                     break;
                 }
               }
             }
           }
         }
+        return datasets;
       }
-
-      console.log(datasets)
-      return datasets;
-
+      if (filterBy == 'monthly') {
+        for (year in data.monthly) {
+          for (month in data.monthly[year]) {
+            for (labels in data.monthly[year][month]) {
+              switch (labels) {
+                case 'extend_loan':
+                  datasets[0].data.push(data.monthly[year][month][labels])
+                  break;
+                case 'pawned':
+                  datasets[1].data.push(data.monthly[year][month][labels])
+                  break;
+                case 'returned':
+                  datasets[2].data.push(data.monthly[year][month][labels])
+                  break;
+                case 'transferred_to_sellable':
+                  datasets[3].data.push(data.monthly[year][month][labels])
+                  break;
+                case 'sold':
+                  datasets[4].data.push(data.monthly[year][month][labels])
+                  break;
+              }
+            }
+          }
+        }
+        return datasets;
+      }
+      if (filterBy == 'yearly') {
+        for (year in data.yearly) {
+          for (labels in data.yearly[year]) {
+            switch (labels) {
+              case 'extend_loan':
+                datasets[0].data.push(data.yearly[year][labels])
+                break;
+              case 'pawned':
+                datasets[1].data.push(data.yearly[year][labels])
+                break;
+              case 'returned':
+                datasets[2].data.push(data.yearly[year][labels])
+                break;
+              case 'transferred_to_sellable':
+                datasets[3].data.push(data.yearly[year][labels])
+                break;
+              case 'sold':
+                datasets[4].data.push(data.yearly[year][labels])
+                break;
+            }
+          }
+        }
+        return datasets;
+      }
 
     }
 
@@ -125,24 +177,26 @@ myApp.controller('mainController',
       var labels = [];
       switch (filterBy) {
         case 'yearly':
-          for (key in data) {
+          for (key in data.yearly) {
             labels.push(key)
           }
           break;
         case 'monthly':
-          for (key in data) {
+          for (key in data.monthly) {
             var prepend = key;
-            for (key1 in data[key]) {
+            for (key1 in data.monthly[key]) {
               labels.push(prepend + '/' + key1)
             }
           }
           break;
         case 'daily':
-          for (key in data) {
-            for (key1 in data[key]) {
-              var prepend = key1;
-              for (key2 in data[key][key1])
-                labels.push(prepend + '/' + key2)
+          for (year in data.daily) {
+            console.log(year)
+            for (month in data.daily[year]) {
+              var prepend = month;
+              for (daily in data.daily[year][month]) {
+                labels.push(prepend + '/' + daily)
+              }
             }
           }
           break;
