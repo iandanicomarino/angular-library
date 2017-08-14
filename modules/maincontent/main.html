@@ -1,32 +1,75 @@
-<section layout="row">
+<section layout="column">
   <md-sidenav ng-include="'/modules/sidenav-topnav/sidenav.html'" class="md-sidenav-left" md-component-id="left" md-whiteframe="4"
     ng-controller="topBarController">
 
     </md-sidenav>
 
-    <md-content flex layout-padding>
+    
+    <div layout="column" flex="100" layout-align="top center">
+      <md-card>
+        <img ng-src="{{config.imgURL}}" style="width: 300px; height: auto" class="md-card-image" alt="Logo goes here.">
+        <md-card-content align="center">
+          <h2>{{config.pawnshopName}}</h2>
+          <p>"We got you covered."</p>
+        </md-card-content>
+      </md-card>
+    </div>
 
-      <div layout="column" layout-align="top center">
-        <md-card>
-          <img ng-src="{{config.imgURL}}" style="width: 300px; height: auto" class="md-card-image" alt="Logo goes here.">
-          <md-card-content align="center">
-            <h2>{{config.pawnshopName}}</h2>
-            <p>"We got you covered."</p>
-          </md-card-content>
-        </md-card>
-        
-
-        
-
-    </md-content>
-    <md-select ng-model="filterBy" style="height: 40px;">
-        <md-option><em>None</em></md-option>
-        <md-option ng-repeat="value in ['monthly','daily','yearly']" ng-value="value">
-        {{value}}
-        </md-option>
-    </md-select>
-    <div  flex=80>
-          <canvas id="myChart"></canvas>
+    <div layout="row" flex="100" layout-align="top center" layout-wrap>
+      <div flex-offset="25" flex="50">
+        <md-select ng-model="filterBy" style="height: 40px;">
+          <md-option><em>None</em></md-option>
+          <md-option ng-repeat="value in ['monthly','daily','yearly']" ng-value="value">
+            {{value}}
+          </md-option>
+        </md-select>
       </div>
-        
+    
+
+      <div flex-offset="25"  flex="50">
+        <canvas id="myChart"></canvas>
+      </div>
+
+      <div flex-offset="25"  flex="50">
+        <table class="table table-hover table-mc-light-blue">
+          <tr>
+            <td>Value/Timeframe</td>
+            <td ng-repeat="label in labels">{{label}}</td>
+          </tr>
+          <tr ng-repeat="data in fortable">
+            <td>{{data.label}}</td>
+            <td ng-repeat="data in data.data track by $index">{{data}}</td>
+          </tr>
+        </table>
+        <md-button class="md-primary md-raised md-hue-2" ng-click="print('tableForPrinting')">Print</md-button>
+      </div>
+
+    </div>
+
+    
+
+
+
 </section>
+
+
+<div id="tableForPrinting"> 
+  <center>
+    <h2>{{config.pawnshopName}} {{filterBy | uppercase}} Reports</h2>
+
+  </center>
+  <div flex="50">
+    <img src="{{imgData}}" alt="">
+  </div>
+  <table  class="table">
+    <tr>
+      <td>Value/Timeframe</td>
+      <td ng-repeat="label in labels">{{label}}</td>
+    </tr>
+    <tr ng-repeat="data in fortable">
+      <td>{{data.label}}</td>
+      <td ng-repeat="data in data.data track by $index">{{data}}</td>
+    </tr>
+  </table>
+    
+</div>

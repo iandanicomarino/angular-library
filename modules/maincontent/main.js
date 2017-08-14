@@ -1,6 +1,6 @@
 myApp.controller('mainController',
-  function ($rootScope, $q, $scope, $timeout, $mdSidenav, $log, writeService, $mdDialog, configService, readService, writeService) {
-
+  function ($rootScope, $q, $scope, $timeout, $mdSidenav, $log, writeService, $mdDialog, configService, readService, writeService,PrintPagesCtrl) {
+    var myChart
     $scope.filterBy = 'yearly';
 
 
@@ -22,7 +22,10 @@ myApp.controller('mainController',
 
     function initializeChart() {
       var ctx = document.getElementById("myChart").getContext('2d');
-      var myChart = new Chart(ctx, {
+      if (myChart) {
+          myChart.destroy();
+        }
+      myChart = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: $scope.labels,
@@ -37,6 +40,11 @@ myApp.controller('mainController',
           ],
         },
         options: {
+         animation:{
+              onComplete : function(){
+                  $scope.imgData = myChart.toBase64Image();
+              }
+          },
           scales: {
             yAxes: [{
               ticks: {
@@ -46,18 +54,29 @@ myApp.controller('mainController',
           }
         }
       });
+     
+      myChart.update();
     }
+
 
 
     function composeData(data, filterBy) {
       $scope.chart = {}
       $scope.labels = getLabel(data, filterBy);
       $scope.data = getData(data, filterBy);
+      $scope.fortable = $scope.data;
+      console.log($scope.fortable);
     }
+
+     $scope.print = function (div, item, key) {
+        $scope.dateGenerated = new Date();
+        PrintPagesCtrl.print(div)
+    }
+
 
     function getData(data, filterBy) {
       var datasets = [];
-
+      
       datasets = [
         {
           label: "Extended Loan",
@@ -95,25 +114,11 @@ myApp.controller('mainController',
           for (month in data.daily[year]) {
             var prepend = month;
             for (day in data.daily[year][month]) {
-              for (labels in data.daily[year][month][day]) {
-                switch (labels) {
-                  case 'extend_loan':
-                    datasets[0].data.push(data.daily[year][month][day][labels])
-                    break;
-                  case 'pawned':
-                    datasets[1].data.push(data.daily[year][month][day][labels])
-                    break;
-                  case 'returned':
-                    datasets[2].data.push(data.daily[year][month][day][labels])
-                    break;
-                  case 'transferred_to_sellable':
-                    datasets[3].data.push(data.daily[year][month][day][labels])
-                    break;
-                  case 'sold':
-                    datasets[4].data.push(data.daily[year][month][day][labels])
-                    break;
-                }
-              }
+              datasets[0].data.push(data.daily[year][month][day]['extend_loan'] || 0)
+              datasets[1].data.push(data.daily[year][month][day]['pawned'] || 0)
+              datasets[2].data.push(data.daily[year][month][day]['returned'] || 0)
+              datasets[3].data.push(data.daily[year][month][day]['transferred_to_sellable'] || 0)
+              datasets[4].data.push(data.daily[year][month][day]['sold'] || 0)
             }
           }
         }
@@ -122,50 +127,22 @@ myApp.controller('mainController',
       if (filterBy == 'monthly') {
         for (year in data.monthly) {
           for (month in data.monthly[year]) {
-            for (labels in data.monthly[year][month]) {
-              switch (labels) {
-                case 'extend_loan':
-                  datasets[0].data.push(data.monthly[year][month][labels])
-                  break;
-                case 'pawned':
-                  datasets[1].data.push(data.monthly[year][month][labels])
-                  break;
-                case 'returned':
-                  datasets[2].data.push(data.monthly[year][month][labels])
-                  break;
-                case 'transferred_to_sellable':
-                  datasets[3].data.push(data.monthly[year][month][labels])
-                  break;
-                case 'sold':
-                  datasets[4].data.push(data.monthly[year][month][labels])
-                  break;
-              }
-            }
+            datasets[0].data.push(data.monthly[year][month]['extend_loan'] || 0)
+            datasets[1].data.push(data.monthly[year][month]['pawned'] || 0)
+            datasets[2].data.push(data.monthly[year][month]['returned'] || 0)
+            datasets[3].data.push(data.monthly[year][month]['transferred_to_sellable'] || 0)
+            datasets[4].data.push(data.monthly[year][month]['sold'] || 0)
           }
         }
         return datasets;
       }
       if (filterBy == 'yearly') {
         for (year in data.yearly) {
-          for (labels in data.yearly[year]) {
-            switch (labels) {
-              case 'extend_loan':
-                datasets[0].data.push(data.yearly[year][labels])
-                break;
-              case 'pawned':
-                datasets[1].data.push(data.yearly[year][labels])
-                break;
-              case 'returned':
-                datasets[2].data.push(data.yearly[year][labels])
-                break;
-              case 'transferred_to_sellable':
-                datasets[3].data.push(data.yearly[year][labels])
-                break;
-              case 'sold':
-                datasets[4].data.push(data.yearly[year][labels])
-                break;
-            }
-          }
+          datasets[0].data.push(data.yearly[year]['extend_loan'] || 0)
+          datasets[1].data.push(data.yearly[year]['pawned'] || 0)
+          datasets[2].data.push(data.yearly[year]['returned'] || 0)
+          datasets[3].data.push(data.yearly[year]['transferred_to_sellable'] || 0)
+          datasets[4].data.push(data.yearly[year]['sold'] || 0)
         }
         return datasets;
       }
