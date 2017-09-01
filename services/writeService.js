@@ -23,7 +23,7 @@ myApp.service('writeService', function ($http, $q, configService) {
         sendSMS: function (cellphone, item, name) {
             return $q(function (resolve, reject) {
                 var query = "?cellphone=" + cellphone + "&item=" + item + "&name=" + name;
-                $http.get('http://angular-pawnshop.herokuapp.com/sendSMS' + query).then(function (success) {
+                $http.get('https://angular-pawnshop.herokuapp.com/sendSMS' + query).then(function (success) {
                     console.log(success);
                     resolve("sucess sending sms->", cellphone)
                 }, function (error) {
@@ -34,7 +34,7 @@ myApp.service('writeService', function ($http, $q, configService) {
         sendEmail: function (email, item, name) {
             return $q(function (resolve, reject) {
                 var query = "?email=" + email + "&item=" + item + "&name=" + name;
-                $http.get('http://angular-pawnshop.herokuapp.com/sendEmail' + query).then(function (success) {
+                $http.get('https://angular-pawnshop.herokuapp.com/sendEmail' + query).then(function (success) {
                     console.log(success);
                     resolve("sucess sending email->", email)
                 }, function (error) {
@@ -66,6 +66,7 @@ myApp.service('writeService', function ($http, $q, configService) {
                     .then(function (key) {
                         resolve(key)
                         writeServiceFunctions.updateReports('pawned')
+                        writeServiceFunctions.updateMoneyReport('outbound_money',data.pawnValue)
                     }, function (error) {
                         console.log(error)
                         reject(error)
@@ -119,7 +120,8 @@ myApp.service('writeService', function ($http, $q, configService) {
                             .then(function (key) {
                                 resolve(key)
                                 console.log(key)
-                                writeServiceFunctions.updateReports('returned')
+                                writeServiceFunctions.updateReports('returned');
+                                writeServiceFunctions.updateMoneyReport('inbound_money',data.pawnValue)
                             }, function (error) {
                                 console.log(error)
                                 reject(error)
@@ -140,6 +142,7 @@ myApp.service('writeService', function ($http, $q, configService) {
                             .then(function (key) {
                                 resolve(key)
                                 writeServiceFunctions.updateReports('sold')
+                                writeServiceFunctions.updateMoneyReport('inbound_money',data.soldAs)
                             }, function (error) {
                                 console.log(error)
                                 reject(error)
@@ -170,7 +173,7 @@ myApp.service('writeService', function ($http, $q, configService) {
             var daily = db.ref('reports/daily/'+year+'/'+month+'/'+date+'/'+incrementTo);
 
             yearly.transaction(function(value){
-                if(value != ''&& value != undefined && value != null ){
+                if(value != ''&& value != undefined && value != null){
                     value = value+1;  
                    return value;
                 }else{
@@ -193,9 +196,41 @@ myApp.service('writeService', function ($http, $q, configService) {
                     return 1;
                 }
             })
+        },
+        updateMoneyReport: function(incrementTo,amount){
+            var datenow = moment();
+            var year    =   ''+datenow.year();
+            var month   =   ''+(datenow.month()+1); 
+            var date    =   ''+datenow.date();
 
+            var yearly = db.ref('reports/yearly/'+year+'/'+incrementTo)
+            var monthly = db.ref('reports/monthly/'+year+'/'+month+'/'+incrementTo);
+            var daily = db.ref('reports/daily/'+year+'/'+month+'/'+date+'/'+incrementTo);
 
-            console.log(year,month,date)
+            yearly.transaction(function(value){
+                if(value != ''&& value != undefined && value != null){
+                    value = value + amount;  
+                   return value;
+                }else{
+                    return amount;
+                }
+            })
+            monthly.transaction(function(value){
+                if(value != ''&& value != undefined && value != null ){
+                    value = value+amount;  
+                   return value;
+                }else{
+                    return amount;
+                }
+            })
+            daily.transaction(function(value){
+                if(value != ''&& value != undefined && value != null ){
+                    value = value+amount;  
+                   return value;
+                }else{
+                    return amount;
+                }
+            })
         }
 
     }
